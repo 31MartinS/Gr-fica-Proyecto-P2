@@ -27,6 +27,9 @@ namespace Proyecto2P
         private Image _imagenEnemigo;
         private Image _imagenBala;
         private Image _imagenFondo;
+        private Image _imagenMira;
+
+
 
         private PointF _mousePosition;
 
@@ -41,6 +44,17 @@ namespace Proyecto2P
         private Timer _temporizadorMensajeBoss;
         private int _duracionMensajeBoss; // Duración en milisegundos
         private int saludJefe;
+
+        // Variables para los paneles de menú
+        private Panel panelInicio;
+        private Panel panelPausa;
+        private Panel panelSeleccionPersonaje;
+
+        //Personaje
+        private string personajeSeleccionado = "Mago";
+
+        //Path relativo
+        string basePath = AppDomain.CurrentDomain.BaseDirectory;
 
         public Form1()
         {
@@ -67,7 +81,7 @@ namespace Proyecto2P
 
             // Inicializar variables del mensaje del jefe
             _mostrarMensajeBoss = false;
-            _duracionMensajeBoss = 3000; // 3 segundos
+            _duracionMensajeBoss = 2000; // 2 segundos
             _temporizadorMensajeBoss = new Timer();
             _temporizadorMensajeBoss.Interval = _duracionMensajeBoss;
             _temporizadorMensajeBoss.Tick += (s, e) => _mostrarMensajeBoss = false;
@@ -83,6 +97,8 @@ namespace Proyecto2P
                 _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0121.png"));
                 _imagenBala = Image.FromFile(Path.Combine(imagesPath, "tile_0113.png"));
                 _imagenFondo = Image.FromFile(Path.Combine(imagesPath, "background.png"));
+                _imagenMira = Image.FromFile(Path.Combine(imagesPath, "tile_0060.png"));
+
             }
             catch (FileNotFoundException ex)
             {
@@ -93,11 +109,10 @@ namespace Proyecto2P
             // Ajustar el tamaño del formulario al tamaño del fondo
             this.ClientSize = new Size(_imagenFondo.Width, _imagenFondo.Height);
 
-            // Inicializar la variable de estado de movimiento del jugador
-            _puedeMoverse = true;
-
-            // Iniciar el temporizador
-            _temporizador.Start();
+            //Bloqueo de tamaño de pantalla
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
 
             // Configurar el formulario
             DoubleBuffered = true;
@@ -105,9 +120,214 @@ namespace Proyecto2P
             MouseMove += AlMoverElMouse;
             MouseDown += AlPresionarMouse;
 
-            // Posición inicial del jugador
-            _posicionDelJugador = new PointF(ClientSize.Width / 2, ClientSize.Height / 2);
+
+            // Inicializar paneles de menú
+            InicializarPanelesDeMenu();
+
         }
+
+        private void cambiarPersonaje()
+        {
+            // Definir el directorio base para las imágenes
+            string imagesPath = Path.Combine(basePath, "src");
+
+            try
+            {
+                switch (personajeSeleccionado)
+                {
+                    case "Mago":
+                        _imagenJugador = Image.FromFile(Path.Combine(imagesPath, "tile_0084.png"));
+                        _imagenBala = Image.FromFile(Path.Combine(imagesPath, "tile_0113.png"));
+                        break;
+                    case "Caballero":
+                        _imagenJugador = Image.FromFile(Path.Combine(imagesPath, "tile_0097.png"));
+                        _imagenBala = Image.FromFile(Path.Combine(imagesPath, "tile_0106.png"));
+                        break;
+                    case "Enano":
+                        _imagenJugador = Image.FromFile(Path.Combine(imagesPath, "tile_0087.png"));
+                        _imagenBala = Image.FromFile(Path.Combine(imagesPath, "tile_0118.png"));
+                        break;
+                    case "Aldeano":
+                        _imagenJugador = Image.FromFile(Path.Combine(imagesPath, "tile_0088.png"));
+                        _imagenBala = Image.FromFile(Path.Combine(imagesPath, "tile_0103.png"));
+                        break;
+                    default:
+                        throw new Exception("Personaje no reconocido");
+                }
+
+            }
+            catch (FileNotFoundException ex)
+            {
+                MessageBox.Show($"Error al cargar la imagen: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+
+        
+        }
+        
+        //Cursos invisible
+        private Cursor OcultarCursor()
+        {
+            Bitmap bitmap = new Bitmap(1, 1);
+            IntPtr ptr = bitmap.GetHicon();
+            Icon icon = Icon.FromHandle(ptr);
+            return new Cursor(icon.Handle);
+        }
+
+        private void InicializarPanelesDeMenu()
+        {
+            // Panel de inicio
+            panelInicio = new Panel
+            {
+                Size = this.ClientSize,
+                Location = new Point(0, 0),
+                BackColor = Color.FromArgb(100, 0, 0, 0), 
+                Visible = true 
+            };
+
+            Label titulo = new Label
+            {
+                Text = "Bochi the rock",
+                ForeColor = Color.White,
+                Font = new Font("Arial Black", 24, FontStyle.Bold),
+                AutoSize = true,
+                Location = new Point((panelInicio.Width / 2) - 140, (panelInicio.Height / 2) - 100),
+                BackColor = Color.FromArgb(0, 0, 0, 0),
+            };
+
+            Button btnIniciar = new Button
+            {
+                Text = "Iniciar Juego",
+                Location = new Point((panelInicio.Width / 2) - 50, (panelInicio.Height / 2) - 25),
+                Size = new Size(100, 50)
+            };
+            btnIniciar.Click += (s, e) => { 
+                panelInicio.Visible = false;
+
+                //Cambiar el personaje antes de iniciar
+                cambiarPersonaje();
+
+                // Inicializar la variable de estado de movimiento del jugador
+                _puedeMoverse = true;
+
+                // Iniciar el temporizador
+                _temporizador.Start();
+
+                
+                // Posición inicial del jugador
+                _posicionDelJugador = new PointF(ClientSize.Width / 2, ClientSize.Height / 2);
+
+                // Ocultar el cursor del mouse
+                this.Cursor = OcultarCursor();
+            };
+
+            Button btnSalir = new Button
+            {
+                Text = "Salir",
+                Location = new Point((panelInicio.Width / 2) - 50, (panelInicio.Height / 2) + 95),
+                Size = new Size(100, 50)
+            };
+            btnSalir.Click += (s, e) => Application.Exit();
+
+            Button btnSeleccionPersonaje = new Button
+            {
+                Text = "Selección de Personaje",
+                Location = new Point((panelInicio.Width / 2) - 75, (panelInicio.Height / 2) + 35),
+                Size = new Size(150, 50)
+            };
+            btnSeleccionPersonaje.Click += (s, e) => { 
+                panelSeleccionPersonaje.Visible = true;
+                panelInicio.Visible = false;
+
+            };
+
+
+            panelInicio.Controls.Add(titulo);
+            panelInicio.Controls.Add(btnIniciar);
+            panelInicio.Controls.Add(btnSeleccionPersonaje);
+            panelInicio.Controls.Add(btnSalir);
+            this.Controls.Add(panelInicio);
+
+
+
+
+
+            // Panel de selección de personaje
+            panelSeleccionPersonaje = new Panel
+            {
+                Size = this.ClientSize,
+                Location = new Point(0, 0),
+                BackColor = Color.FromArgb(200, 0, 0, 0), // Fondo semi-transparente
+                Visible = false // Inicialmente invisible
+            };
+
+            Button btnMago = new Button
+            {
+                Text = "Mago",
+                Location = new Point((panelSeleccionPersonaje.Width / 2) - 50, (panelSeleccionPersonaje.Height / 2) - 100),
+                Size = new Size(100, 50)
+            };
+            btnMago.Click += (s, e) => {
+                personajeSeleccionado = "Mago";
+                panelSeleccionPersonaje.Visible = false;
+                panelInicio.Visible = true;
+
+            };
+
+            Button btnCaballero = new Button
+            {
+                Text = "Caballero",
+                Location = new Point((panelSeleccionPersonaje.Width / 2) - 50, (panelSeleccionPersonaje.Height / 2) - 30),
+                Size = new Size(100, 50)
+            };
+            btnCaballero.Click += (s, e) =>
+            {
+                personajeSeleccionado = "Caballero";
+                panelSeleccionPersonaje.Visible = false;
+                panelInicio.Visible = true;
+
+            };
+
+
+            Button btnEnano = new Button
+            {
+                Text = "Enano",
+                Location = new Point((panelSeleccionPersonaje.Width / 2) - 50, (panelSeleccionPersonaje.Height / 2) + 40),
+                Size = new Size(100, 50)
+            };
+            btnEnano.Click += (s, e) => {
+                personajeSeleccionado = "Enano";
+                panelSeleccionPersonaje.Visible = false;
+                panelInicio.Visible = true;
+
+            };
+
+            Button btnAldeano = new Button
+            {
+                Text = "Aldeano",
+                Location = new Point((panelSeleccionPersonaje.Width / 2) - 50, (panelSeleccionPersonaje.Height / 2) + 110),
+                Size = new Size(100, 50)
+            };
+            btnAldeano.Click += (s, e) => {
+                personajeSeleccionado = "Aldeano";
+                panelSeleccionPersonaje.Visible = false;
+                panelInicio.Visible = true;
+
+            };
+
+
+            panelSeleccionPersonaje.Controls.Add(btnMago);
+            panelSeleccionPersonaje.Controls.Add(btnCaballero);
+            panelSeleccionPersonaje.Controls.Add(btnEnano);
+            panelSeleccionPersonaje.Controls.Add(btnAldeano);
+            this.Controls.Add(panelSeleccionPersonaje);
+        }
+
+
+
 
         private void AlDibujar(object sender, PaintEventArgs e)
         {
@@ -136,6 +356,10 @@ namespace Proyecto2P
                 {
                     enemigo.Dibujar(g, _imagenEnemigo);
                 }
+
+                // Dibujar la mira en la posición del mouse
+                g.DrawImage(_imagenMira, _mousePosition.X - _imagenMira.Width / 2, _mousePosition.Y - _imagenMira.Height / 2, _imagenMira.Width, _imagenMira.Height);
+
 
                 // Dibujar HUD
                 g.DrawString($"Vida: {_saludDelJugador}", new Font("Arial", 16), Brushes.White, 10, 10);
@@ -367,7 +591,6 @@ namespace Proyecto2P
 
             Invalidate();
         }
-
 
         private void MoverJugador()
         {
