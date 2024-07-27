@@ -45,10 +45,12 @@ namespace Proyecto2P
         private Timer _temporizadorMensajeBoss;
         private int _duracionMensajeBoss; // Duración en milisegundos
         private int saludJefe;
+        private int _derrotados;
+
 
         // Variables para los paneles de menú
         private Panel panelInicio;
-        //private Panel panelPausa;
+        private Panel panelPausa;
         private Panel panelSeleccionPersonaje;
 
         //Personaje
@@ -58,7 +60,7 @@ namespace Proyecto2P
         string basePath = AppDomain.CurrentDomain.BaseDirectory;
 
 
-        //musica
+        //Musica
         private SoundPlayer _player;
 
 
@@ -84,10 +86,19 @@ namespace Proyecto2P
         private int _puntosParaSiguienteBoss;
         private int _incrementoPuntosBoss;
 
+        //Mover
+        private bool _arribaPresionado;
+        private bool _abajoPresionado;
+        private bool _izquierdaPresionado;
+        private bool _derechaPresionado;
+
 
         public Form1()
         {
             InitializeComponent();
+            this.KeyPreview = true;
+            this.KeyDown += new KeyEventHandler(AlPresionarTecla);
+            this.KeyUp += new KeyEventHandler(AlSoltarTecla);
 
             // Inicializar variables
             _temporizador = new Timer();
@@ -104,6 +115,7 @@ namespace Proyecto2P
             _bossAparecido = false;
             _boss = null;
             saludJefe = 200;
+            _derrotados = 0;
 
             // Inicializar ScoreManager
             _scoreManager = new ScoreManager();
@@ -118,8 +130,6 @@ namespace Proyecto2P
             // Inicializar puntos para la aparición del jefe
             _puntosParaSiguienteBoss = 100;
             _incrementoPuntosBoss = 200;
-
-            // ... (otros inicializadores)
 
             // Definir el directorio base para las imágenes
             string imagesPath = Path.Combine(basePath, "src");
@@ -391,6 +401,50 @@ namespace Proyecto2P
             panelSeleccionPersonaje.Controls.Add(btnEnano);
             panelSeleccionPersonaje.Controls.Add(btnAldeano);
             this.Controls.Add(panelSeleccionPersonaje);
+
+            // Panel de pausa
+            panelPausa = new Panel
+            {
+                Size = this.ClientSize,
+                Location = new Point(0, 0),
+                BackColor = Color.FromArgb(200, 0, 0, 0), // Fondo semi-transparente
+                Visible = false // Inicialmente invisible
+            };
+
+            Label pausaTitulo = new Label
+            {
+                Text = "Pausa",
+                ForeColor = Color.White,
+                Font = new Font("Arial Black", 24, FontStyle.Bold),
+                AutoSize = true,
+                Location = new Point((panelPausa.Width / 2) - 60, (panelPausa.Height / 2) - 100),
+                BackColor = Color.FromArgb(0, 0, 0, 0),
+            };
+
+            Button btnReanudar = new Button
+            {
+                Text = "Reanudar",
+                Location = new Point((panelPausa.Width / 2) - 50, (panelPausa.Height / 2) - 25),
+                Size = new Size(100, 50)
+            };
+            btnReanudar.Click += (s, e) => {
+                panelPausa.Visible = false;
+                _temporizador.Start();
+                this.Cursor = OcultarCursor(); // Ocultar el cursor al reanudar
+            };
+
+            Button btnSalirPausa = new Button
+            {
+                Text = "Salir",
+                Location = new Point((panelPausa.Width / 2) - 50, (panelPausa.Height / 2) + 35),
+                Size = new Size(100, 50)
+            };
+            btnSalirPausa.Click += (s, e) => Application.Exit();
+
+            panelPausa.Controls.Add(pausaTitulo);
+            panelPausa.Controls.Add(btnReanudar);
+            panelPausa.Controls.Add(btnSalirPausa);
+            this.Controls.Add(panelPausa);
         }
 
 
@@ -496,7 +550,7 @@ namespace Proyecto2P
             // Dibujar la barra de vida del jefe
             if (_bossAparecido && _boss != null)
             {
-                float healthPercentage = (float)_boss.Salud / 200f; // Suponiendo que 200 es la salud máxima
+                float healthPercentage = (float)_boss.Salud / (200f + 200 * _derrotados); // Suponiendo que 200 es la salud máxima
                 int barWidth = (int)(ClientSize.Width * healthPercentage);
                 g.FillRectangle(Brushes.Green, 0, ClientSize.Height - 20, barWidth, 20);
                 g.DrawRectangle(Pens.Black, 0, ClientSize.Height - 20, ClientSize.Width, 20);
@@ -536,11 +590,6 @@ namespace Proyecto2P
                 float longitud = (float)Math.Sqrt(dx * dx + dy * dy);
 
                 _balas.Add(new Bala(_posicionDelJugador, new PointF(dx / longitud, dy / longitud)));
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
-                // Alternar el estado de movimiento del jugador
-                _puedeMoverse = !_puedeMoverse;
             }
         }
 
@@ -644,6 +693,7 @@ namespace Proyecto2P
 
                     // Incrementar el umbral para la siguiente aparición del jefe
                     _puntosParaSiguienteBoss += _incrementoPuntosBoss;
+                    _derrotados++;
                 }
                 else
                 {
@@ -733,8 +783,7 @@ namespace Proyecto2P
                 Image.FromFile(Path.Combine(bossPath, "dead", "08.png")),
                 Image.FromFile(Path.Combine(bossPath, "dead", "09.png"))
             };
-
-                _boss = new Boss(new PointF(ClientSize.Width / 2, ClientSize.Height / 2), 4.0f, 200, animacionCaminar, animacionAtaque, animacionMuerte, this);
+                _boss = new Boss(new PointF(ClientSize.Width / 2, ClientSize.Height / 2), 4.0f, 200 + 200 * _derrotados, animacionCaminar, animacionAtaque, animacionMuerte, this);
             }
 
             Invalidate();
@@ -745,21 +794,78 @@ namespace Proyecto2P
 
         private void MoverJugador()
         {
-            float dx = _mousePosition.X - _posicionDelJugador.X;
-            float dy = _mousePosition.Y - _posicionDelJugador.Y;
-            float distance = (float)Math.Sqrt(dx * dx + dy * dy);
-            float speed = Math.Min(distance / 10.0f, 5.0f);
+            float speed = 5.0f;
 
-            if (distance > 1)
+            if (_arribaPresionado)
+                _posicionDelJugador.Y -= speed;
+            if (_abajoPresionado)
+                _posicionDelJugador.Y += speed;
+            if (_izquierdaPresionado)
+                _posicionDelJugador.X -= speed;
+            if (_derechaPresionado)
+                _posicionDelJugador.X += speed;
+
+            // Limitar la posición del jugador dentro de los límites del fondo
+            _posicionDelJugador.X = Math.Max(0, Math.Min(ClientSize.Width, _posicionDelJugador.X));
+            _posicionDelJugador.Y = Math.Max(0, Math.Min(ClientSize.Height, _posicionDelJugador.Y));
+
+            Invalidate(); // Redibujar el formulario para actualizar la posición del jugador
+        }
+
+
+        private void AlPresionarTecla(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
             {
-                _posicionDelJugador.X += dx / distance * speed;
-                _posicionDelJugador.Y += dy / distance * speed;
-
-                // Limitar la posición del jugador dentro de los límites del fondo
-                _posicionDelJugador.X = Math.Max(0, Math.Min(ClientSize.Width, _posicionDelJugador.X));
-                _posicionDelJugador.Y = Math.Max(0, Math.Min(ClientSize.Height, _posicionDelJugador.Y));
+                case Keys.W:
+                    _arribaPresionado = true;
+                    break;
+                case Keys.S:
+                    _abajoPresionado = true;
+                    break;
+                case Keys.A:
+                    _izquierdaPresionado = true;
+                    break;
+                case Keys.D:
+                    _derechaPresionado = true;
+                    break;
+                case Keys.Escape:
+                    PausarJuego();
+                    break;
             }
         }
+
+        private void AlSoltarTecla(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                    _arribaPresionado = false;
+                    break;
+                case Keys.S:
+                    _abajoPresionado = false;
+                    break;
+                case Keys.A:
+                    _izquierdaPresionado = false;
+                    break;
+                case Keys.D:
+                    _derechaPresionado = false;
+                    break;
+            }
+        }
+
+        private void PausarJuego()
+        {
+            _temporizador.Stop();
+            panelPausa.Visible = true;
+            this.Cursor = Cursors.Default;
+        }
+
+
+
+
+
+
 
         private void GenerarEnemigo()
         {
@@ -767,28 +873,42 @@ namespace Proyecto2P
 
             switch (_incrementoDeSaludDeEnemigos)
             {
-                case int salud when salud < 20:
+                case int salud when salud < 20 && _derrotados == 0:
                     _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0121.png"));
+                    _incrementoDeSaludDeEnemigos++;
+
                     break;
-                case int salud when salud < 30:
+                case int salud when salud < 30 && _derrotados == 0:
                     _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0122.png"));
+                    _incrementoDeSaludDeEnemigos++;
+
                     break;
-                case int salud when salud < 40:
+                case int salud when salud < 40 && _derrotados == 1:
                     _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0123.png"));
+                    _incrementoDeSaludDeEnemigos++;
+
                     break;
-                case int salud when salud < 50:
+                case int salud when salud < 50 && _derrotados == 1:
                     _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0108.png"));
+                    _incrementoDeSaludDeEnemigos++;
+
                     break;
-                case int salud when salud < 60:
+                case int salud when salud < 60 && _derrotados == 2:
                     _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0109.png"));
+                    _incrementoDeSaludDeEnemigos++;
+
+                    break;
+                case int salud when salud < 70 && _derrotados == 2:
+                    _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0111.png"));
+                    _incrementoDeSaludDeEnemigos++;
+
                     break;
                 default:
-                    _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0111.png"));
+
                     break;
             }
 
             PointF posicion = new PointF(_aleatorio.Next(ClientSize.Width), _aleatorio.Next(ClientSize.Height));
-            _incrementoDeSaludDeEnemigos++;
             _enemigos.Add(new Enemigo(posicion, _incrementoDeSaludDeEnemigos, _imagenEnemigo, _incrementoDeSaludDeEnemigos));
         }
 
