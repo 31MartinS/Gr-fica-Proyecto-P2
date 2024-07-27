@@ -7,20 +7,20 @@
       "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\proyecto2p\\boss.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\boss.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|c:\\users\\usuario\\onedrive\\desktop\\gr-fica-proyecto-p2\\proyecto2p\\proyecto2p\\enemigo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\enemigo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|c:\\users\\usuario\\onedrive\\desktop\\gr-fica-proyecto-p2\\proyecto2p\\proyecto2p\\bala.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\proyecto2p\\bala.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\bala.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|c:\\users\\usuario\\onedrive\\desktop\\gr-fica-proyecto-p2\\proyecto2p\\proyecto2p\\scoremanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\proyecto2p\\enemigo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\enemigo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\proyecto2p\\scoremanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\scoremanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|c:\\users\\usuario\\onedrive\\desktop\\gr-fica-proyecto-p2\\proyecto2p\\proyecto2p\\boss.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\boss.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\proyecto2p\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
@@ -39,6 +39,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "Boss.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Boss.cs",
+              "RelativeDocumentMoniker": "Proyecto2P\\Boss.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Boss.cs",
+              "RelativeToolTip": "Proyecto2P\\Boss.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-27T02:50:06.01Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "ScoreManager.cs",
               "DocumentMoniker": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\ScoreManager.cs",
               "RelativeDocumentMoniker": "Proyecto2P\\ScoreManager.cs",
@@ -57,35 +70,22 @@
               "RelativeDocumentMoniker": "Proyecto2P\\Enemigo.cs",
               "ToolTip": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Enemigo.cs",
               "RelativeToolTip": "Proyecto2P\\Enemigo.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAADEAAAA0AAAA",
+              "ViewState": "AQIAABkAAAAAAAAAAAAowDsAAAA2AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-26T23:59:53.894Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "Bala.cs",
               "DocumentMoniker": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Bala.cs",
               "RelativeDocumentMoniker": "Proyecto2P\\Bala.cs",
               "ToolTip": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Bala.cs",
               "RelativeToolTip": "Proyecto2P\\Bala.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAAAUAAAAAAAAAAAAxwBcAAAAkAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-26T23:59:52.904Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Boss.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Boss.cs",
-              "RelativeDocumentMoniker": "Proyecto2P\\Boss.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Boss.cs",
-              "RelativeToolTip": "Proyecto2P\\Boss.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAqwHMAAABeAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-25T15:47:10.494Z",
               "EditorCaption": ""
             },
             {
@@ -96,7 +96,7 @@
               "RelativeDocumentMoniker": "Proyecto2P\\Form1.cs",
               "ToolTip": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Form1.cs",
               "RelativeToolTip": "Proyecto2P\\Form1.cs",
-              "ViewState": "AQIAADgAAAAAAAAAAADwv98AAAArAAAA",
+              "ViewState": "AQIAAI0BAAAAAAAAAAAwwLcBAAAjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-18T21:33:49.152Z",
               "EditorCaption": ""
@@ -110,8 +110,7 @@
               "ToolTip": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Form1.cs [Dise\u00F1o]",
               "RelativeToolTip": "Proyecto2P\\Form1.cs [Dise\u00F1o]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-18T21:31:20.316Z",
-              "EditorCaption": " [Dise\u00F1o]"
+              "WhenOpened": "2024-07-18T21:31:20.316Z"
             }
           ]
         },

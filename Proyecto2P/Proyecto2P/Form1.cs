@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using System.Media;
 
 namespace Proyecto2P
 {
@@ -47,7 +48,7 @@ namespace Proyecto2P
 
         // Variables para los paneles de menú
         private Panel panelInicio;
-        private Panel panelPausa;
+        //private Panel panelPausa;
         private Panel panelSeleccionPersonaje;
 
         //Personaje
@@ -55,6 +56,32 @@ namespace Proyecto2P
 
         //Path relativo
         string basePath = AppDomain.CurrentDomain.BaseDirectory;
+
+
+        //musica
+        private SoundPlayer _player;
+
+
+
+        //Cinematica
+        private bool _animacionIniciada;
+        private PointF _posicionInicialJugador;
+        private PointF _posicionFinalJugador;
+        private bool _rotacionBloqueada;
+
+        private Image _cofreCerrado;
+        private Image _cofreMedioAbierto;
+        private Image _cofreAbierto;
+        private int _estadoCofre;
+        private bool _animacionCofreIniciada;
+        private Timer _temporizadorCofre;
+
+        private Image _imagenExclamacion;
+        private Timer _temporizadorExclamacion;
+        private int _exclamacionTitileoContador;
+        private bool _mostrarExclamacion;
+
+
 
         public Form1()
         {
@@ -87,7 +114,6 @@ namespace Proyecto2P
             _temporizadorMensajeBoss.Tick += (s, e) => _mostrarMensajeBoss = false;
 
             // Definir el directorio base para las imágenes
-            string basePath = AppDomain.CurrentDomain.BaseDirectory;
             string imagesPath = Path.Combine(basePath, "src");
 
             // Cargar imágenes usando rutas relativas
@@ -98,6 +124,11 @@ namespace Proyecto2P
                 _imagenBala = Image.FromFile(Path.Combine(imagesPath, "tile_0113.png"));
                 _imagenFondo = Image.FromFile(Path.Combine(imagesPath, "background.png"));
                 _imagenMira = Image.FromFile(Path.Combine(imagesPath, "tile_0060.png"));
+                _cofreCerrado = Image.FromFile(Path.Combine(imagesPath, "tile_0089.png"));
+                _cofreMedioAbierto = Image.FromFile(Path.Combine(imagesPath, "tile_0090.png"));
+                _cofreAbierto = Image.FromFile(Path.Combine(imagesPath, "tile_0091.png"));
+                _imagenExclamacion = Image.FromFile(Path.Combine(imagesPath, "exclamacion .png"));
+
 
             }
             catch (FileNotFoundException ex)
@@ -105,6 +136,13 @@ namespace Proyecto2P
                 MessageBox.Show($"Error al cargar la imagen: {ex.Message}");
                 return;
             }
+
+            string audioPath = Path.Combine(basePath, "musica", "AOG.wav");
+            _player = new SoundPlayer(audioPath);
+
+            // Reproducir la música en bucle
+            _player.PlayLooping();
+
 
             // Ajustar el tamaño del formulario al tamaño del fondo
             this.ClientSize = new Size(_imagenFondo.Width, _imagenFondo.Height);
@@ -121,9 +159,32 @@ namespace Proyecto2P
             MouseDown += AlPresionarMouse;
 
 
+
+
+            // Inicializar variables de animación
+            _animacionIniciada = false;
+            _posicionInicialJugador = new PointF(ClientSize.Width / 2, ClientSize.Height); // Desde abajo
+            _posicionFinalJugador = new PointF(ClientSize.Width / 2, ClientSize.Height / 2); // Hasta el centro
+            _rotacionBloqueada = true;
+            _estadoCofre = 0;
+            _animacionCofreIniciada = false;
+            _temporizadorCofre = new Timer();
+            _temporizadorCofre.Interval = 500;
+            _temporizadorCofre.Tick += (s, e) => CambiarEstadoCofre();
+
+
+
+
+            _temporizadorExclamacion = new Timer();
+            _temporizadorExclamacion.Interval = 300;
+            _temporizadorExclamacion.Tick += (s, e) => TitilarExclamacion();
+            _exclamacionTitileoContador = 0;
+            _mostrarExclamacion = false;
+
+
+
             // Inicializar paneles de menú
             InicializarPanelesDeMenu();
-
         }
 
         private void cambiarPersonaje()
@@ -210,18 +271,26 @@ namespace Proyecto2P
                 //Cambiar el personaje antes de iniciar
                 cambiarPersonaje();
 
+                // Ocultar el cursor del mouse
+                this.Cursor = OcultarCursor();
+
                 // Inicializar la variable de estado de movimiento del jugador
-                _puedeMoverse = true;
+                _puedeMoverse = false;
+
+                // Iniciar animación
+                _posicionDelJugador = _posicionInicialJugador;
+                _animacionIniciada = true;
+                _rotacionBloqueada = true;
+
 
                 // Iniciar el temporizador
                 _temporizador.Start();
 
                 
                 // Posición inicial del jugador
-                _posicionDelJugador = new PointF(ClientSize.Width / 2, ClientSize.Height / 2);
+                //_posicionDelJugador = new PointF(ClientSize.Width / 2, ClientSize.Height / 2);
 
-                // Ocultar el cursor del mouse
-                this.Cursor = OcultarCursor();
+                
             };
 
             Button btnSalir = new Button
@@ -337,6 +406,31 @@ namespace Proyecto2P
             // Dibujar el fondo
             g.DrawImage(_imagenFondo, 0, 0, _imagenFondo.Width, _imagenFondo.Height);
 
+            // Dibujar el cofre en el centro
+            Image imagenCofre;
+            switch (_estadoCofre)
+            {
+                case 0:
+                    imagenCofre = _cofreCerrado;
+                    break;
+                case 1:
+                    imagenCofre = _cofreMedioAbierto;
+                    break;
+                case 2:
+                    imagenCofre = _cofreAbierto;
+                    break;
+                default:
+                    imagenCofre = _cofreCerrado;
+                    break;
+            }
+            g.DrawImage(imagenCofre, (ClientSize.Width - imagenCofre.Width) / 2, (ClientSize.Height - imagenCofre.Height) / 2 - 20);
+
+            if (_mostrarExclamacion)
+            {
+                g.DrawImage(_imagenExclamacion, _posicionDelJugador.X - _imagenExclamacion.Width / 2 + 200, _posicionDelJugador.Y - _imagenJugador.Height - _imagenExclamacion.Height + 400, _imagenExclamacion.Width - 400, _imagenExclamacion.Height - 400);
+            }
+
+
             if (_saludDelJugador > 0)
             {
                 // Dibujar al jugador con imagen
@@ -348,13 +442,15 @@ namespace Proyecto2P
                 // Dibujar las balas con imagen
                 foreach (var bala in _balas)
                 {
+                    
                     bala.Dibujar(g, _imagenBala);
                 }
+
 
                 // Dibujar los enemigos con imagen
                 foreach (var enemigo in _enemigos)
                 {
-                    enemigo.Dibujar(g, _imagenEnemigo);
+                    enemigo.Dibujar(g);
                 }
 
                 // Dibujar la mira en la posición del mouse
@@ -365,7 +461,7 @@ namespace Proyecto2P
                 g.DrawString($"Vida: {_saludDelJugador}", new Font("Arial", 16), Brushes.White, 10, 10);
                 g.DrawString($"Puntos: {_scoreManager.GetScore()}", new Font("Arial", 16), Brushes.White, 10, 30);
             }
-            else
+            else if (_saludDelJugador <= 0)
             {
                 // Dibujar mensaje de "You Died" con "Arial Black" o "Impact"
                 Font font = new Font("Arial Black", 48, FontStyle.Bold);
@@ -373,6 +469,11 @@ namespace Proyecto2P
                 float x = (ClientSize.Width - textSize.Width) / 2;
                 float y = (ClientSize.Height - textSize.Height) / 2;
                 g.DrawString("YOU DIED", font, Brushes.Red, x, y);
+
+                // Mostrar el cursor del mouse y detener musica
+                this.Cursor = Cursors.Default;
+                _player.Stop();
+
             }
 
             // Dibujar mensaje del jefe
@@ -414,14 +515,18 @@ namespace Proyecto2P
 
         private void AlMoverElMouse(object sender, MouseEventArgs e)
         {
-            // Actualizar la posición del mouse
-            _mousePosition = e.Location;
+            if (!_rotacionBloqueada)
+            {
+                // Actualizar la posición del mouse
+                _mousePosition = e.Location;
 
-            // Calcular la rotación del jugador
-            float dx = e.X - _posicionDelJugador.X;
-            float dy = e.Y - _posicionDelJugador.Y;
-            _rotacionDelJugador = (float)(Math.Atan2(dy, dx) * 180.0 / Math.PI);
+                // Calcular la rotación del jugador
+                float dx = e.X - _posicionDelJugador.X;
+                float dy = e.Y - _posicionDelJugador.Y;
+                _rotacionDelJugador = (float)(Math.Atan2(dy, dx) * 180.0 / Math.PI);
+            }
         }
+
 
         private void AlPresionarMouse(object sender, MouseEventArgs e)
         {
@@ -431,6 +536,7 @@ namespace Proyecto2P
                 float dx = e.X - _posicionDelJugador.X;
                 float dy = e.Y - _posicionDelJugador.Y;
                 float longitud = (float)Math.Sqrt(dx * dx + dy * dy);
+
                 _balas.Add(new Bala(_posicionDelJugador, new PointF(dx / longitud, dy / longitud)));
             }
             else if (e.Button == MouseButtons.Right)
@@ -442,6 +548,50 @@ namespace Proyecto2P
 
         private void Actualizar(object sender, EventArgs e)
         {
+
+
+
+
+            // Actualizar animación de entrada del jugador
+            if (_animacionIniciada)
+            {
+                float dx = _posicionFinalJugador.X - _posicionDelJugador.X;
+                float dy = _posicionFinalJugador.Y - _posicionDelJugador.Y;
+                float distance = (float)Math.Sqrt(dx * dx + dy * dy);
+                float speed = 3.0f;
+
+                if (distance > 1)
+                {
+                    _posicionDelJugador.X += dx / distance * speed;
+                    _posicionDelJugador.Y += dy / distance * speed;
+                }
+                else
+                {
+                    _posicionDelJugador = _posicionFinalJugador;
+                    _animacionIniciada = false;
+
+
+                    // Iniciar animación del cofre
+                    _animacionCofreIniciada = true;
+                    _temporizadorCofre.Start();
+                }
+
+                Invalidate();
+                return;
+            }
+
+
+            if (_animacionCofreIniciada && _estadoCofre == 2)
+            {
+                _animacionCofreIniciada = false;
+                _temporizadorCofre.Stop();
+                _temporizadorExclamacion.Start();
+            }
+
+
+
+
+
             // Actualizar balas
             for (int i = _balas.Count - 1; i >= 0; i--)
             {
@@ -453,12 +603,17 @@ namespace Proyecto2P
             }
 
             // Generar enemigos
-            _temporizadorDeAparicionDeEnemigos++;
-            if (_temporizadorDeAparicionDeEnemigos > 60 && !_bossAparecido)
+            if (_exclamacionTitileoContador == 0)
             {
-                GenerarEnemigo();
-                _temporizadorDeAparicionDeEnemigos = 0;
+                _temporizadorDeAparicionDeEnemigos++;
+                if (_temporizadorDeAparicionDeEnemigos > 60 && !_bossAparecido)
+                {
+                    GenerarEnemigo();
+                    _temporizadorDeAparicionDeEnemigos = 0;
+                }
             }
+
+
 
             // Actualizar enemigos
             for (int i = _enemigos.Count - 1; i >= 0; i--)
@@ -612,9 +767,27 @@ namespace Proyecto2P
 
         private void GenerarEnemigo()
         {
+            string imagesPath = Path.Combine(basePath, "src");
+
+            switch (_incrementoDeSaludDeEnemigos)
+            {
+                case int salud when salud < 20:
+                    _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0121.png"));
+                    break;
+                case int salud when salud < 30:
+                    _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0122.png"));
+                    break;
+                case int salud when salud < 40:
+                    _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0123.png"));
+                    break;
+                default:
+                    _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0124.png"));
+                    break;
+            }
+
             PointF posicion = new PointF(_aleatorio.Next(ClientSize.Width), _aleatorio.Next(ClientSize.Height));
             _incrementoDeSaludDeEnemigos++;
-            _enemigos.Add(new Enemigo(posicion, _incrementoDeSaludDeEnemigos));
+            _enemigos.Add(new Enemigo(posicion, _incrementoDeSaludDeEnemigos, _imagenEnemigo, _incrementoDeSaludDeEnemigos));
         }
 
         public static void AjustarSaludJugador(int cantidad)
@@ -622,5 +795,37 @@ namespace Proyecto2P
             JugadorSalud += cantidad;
             if (JugadorSalud < 0) JugadorSalud = 0;
         }
+
+
+        private void CambiarEstadoCofre()
+        {
+            _estadoCofre++;
+            if (_estadoCofre > 2)
+            {
+                _estadoCofre = 2;
+                _temporizadorCofre.Stop();
+            }
+
+            Invalidate();
+        }
+
+        private void TitilarExclamacion()
+        {
+            _mostrarExclamacion = !_mostrarExclamacion;
+            _exclamacionTitileoContador++;
+
+            if (_exclamacionTitileoContador >= 6)
+            {
+                _temporizadorExclamacion.Stop();
+                _exclamacionTitileoContador = 0;
+                _mostrarExclamacion = false;
+                _puedeMoverse = true;
+                _rotacionBloqueada = false;
+            }
+
+            Invalidate();
+        }
+
+
     }
 }

@@ -7,12 +7,16 @@ namespace Proyecto2P
     {
         private PointF _posicion;
         private PointF _direccion;
+        private float _rotacion;
         private float _velocidad = 10f;
+
+
 
         public Bala(PointF posicion, PointF direccion)
         {
             _posicion = posicion;
             _direccion = direccion;
+            _rotacion = (float)(Math.Atan2(direccion.Y, direccion.X) * 180.0 / Math.PI) + 90;
         }
 
         public void Actualizar()
@@ -21,10 +25,21 @@ namespace Proyecto2P
             _posicion.Y += _direccion.Y * _velocidad;
         }
 
-        // Modificar para usar imagen en lugar de dibujar una elipse
         public void Dibujar(Graphics g, Image imagenBala)
         {
-            g.DrawImage(imagenBala, _posicion.X - 5, _posicion.Y - 5, 10, 10);
+
+            // Guardar el estado actual de la transformación gráfica
+            var estadoOriginal = g.Save();
+
+            // Aplicar la transformación: traslación y rotación
+            g.TranslateTransform(_posicion.X, _posicion.Y);
+            g.RotateTransform(_rotacion);
+
+            // Dibujar la imagen de la bala centrada en la posición actual
+            g.DrawImage(imagenBala, -imagenBala.Width / 2, -imagenBala.Height / 2);
+
+            // Restaurar el estado gráfico original
+            g.Restore(estadoOriginal);
         }
 
         public bool EstaFueraDePantalla(Size tamanoPantalla)
