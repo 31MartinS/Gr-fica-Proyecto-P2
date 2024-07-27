@@ -83,6 +83,7 @@ namespace Proyecto2P
 
 
 
+
         public Form1()
         {
             InitializeComponent();
@@ -108,7 +109,7 @@ namespace Proyecto2P
 
             // Inicializar variables del mensaje del jefe
             _mostrarMensajeBoss = false;
-            _duracionMensajeBoss = 2000; // 2 segundos
+            _duracionMensajeBoss = 1000; // 2 segundos
             _temporizadorMensajeBoss = new Timer();
             _temporizadorMensajeBoss.Interval = _duracionMensajeBoss;
             _temporizadorMensajeBoss.Tick += (s, e) => _mostrarMensajeBoss = false;
@@ -127,8 +128,7 @@ namespace Proyecto2P
                 _cofreCerrado = Image.FromFile(Path.Combine(imagesPath, "tile_0089.png"));
                 _cofreMedioAbierto = Image.FromFile(Path.Combine(imagesPath, "tile_0090.png"));
                 _cofreAbierto = Image.FromFile(Path.Combine(imagesPath, "tile_0091.png"));
-                _imagenExclamacion = Image.FromFile(Path.Combine(imagesPath, "exclamacion .png"));
-
+                _imagenExclamacion = Image.FromFile(Path.Combine(imagesPath, "signo.png"));
 
             }
             catch (FileNotFoundException ex)
@@ -143,11 +143,10 @@ namespace Proyecto2P
             // Reproducir la música en bucle
             _player.PlayLooping();
 
-
             // Ajustar el tamaño del formulario al tamaño del fondo
             this.ClientSize = new Size(_imagenFondo.Width, _imagenFondo.Height);
 
-            //Bloqueo de tamaño de pantalla
+            // Bloqueo de tamaño de pantalla
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -157,9 +156,6 @@ namespace Proyecto2P
             Paint += AlDibujar;
             MouseMove += AlMoverElMouse;
             MouseDown += AlPresionarMouse;
-
-
-
 
             // Inicializar variables de animación
             _animacionIniciada = false;
@@ -172,20 +168,16 @@ namespace Proyecto2P
             _temporizadorCofre.Interval = 500;
             _temporizadorCofre.Tick += (s, e) => CambiarEstadoCofre();
 
-
-
-
             _temporizadorExclamacion = new Timer();
             _temporizadorExclamacion.Interval = 300;
             _temporizadorExclamacion.Tick += (s, e) => TitilarExclamacion();
             _exclamacionTitileoContador = 0;
             _mostrarExclamacion = false;
 
-
-
             // Inicializar paneles de menú
             InicializarPanelesDeMenu();
         }
+
 
         private void cambiarPersonaje()
         {
@@ -548,10 +540,6 @@ namespace Proyecto2P
 
         private void Actualizar(object sender, EventArgs e)
         {
-
-
-
-
             // Actualizar animación de entrada del jugador
             if (_animacionIniciada)
             {
@@ -570,7 +558,6 @@ namespace Proyecto2P
                     _posicionDelJugador = _posicionFinalJugador;
                     _animacionIniciada = false;
 
-
                     // Iniciar animación del cofre
                     _animacionCofreIniciada = true;
                     _temporizadorCofre.Start();
@@ -580,17 +567,12 @@ namespace Proyecto2P
                 return;
             }
 
-
             if (_animacionCofreIniciada && _estadoCofre == 2)
             {
                 _animacionCofreIniciada = false;
                 _temporizadorCofre.Stop();
                 _temporizadorExclamacion.Start();
             }
-
-
-
-
 
             // Actualizar balas
             for (int i = _balas.Count - 1; i >= 0; i--)
@@ -613,8 +595,6 @@ namespace Proyecto2P
                 }
             }
 
-
-
             // Actualizar enemigos
             for (int i = _enemigos.Count - 1; i >= 0; i--)
             {
@@ -622,7 +602,7 @@ namespace Proyecto2P
                 if (_enemigos[i].EstaMuerto())
                 {
                     _enemigos.RemoveAt(i);
-                    _scoreManager.AddPoints(5); // Añadir puntos al eliminar un enemigo
+                    _scoreManager.AddPoints(100); // Añadir puntos al eliminar un enemigo
                 }
                 else if (_enemigos[i].EstaColisionandoCon(_posicionDelJugador))
                 {
@@ -666,6 +646,23 @@ namespace Proyecto2P
                             _balas.RemoveAt(i);
                             break;
                         }
+                    }
+
+                    // Hacer que el jefe continúe moviéndose hacia el jugador
+                    _boss.Actualizar(_posicionDelJugador);
+
+                    // Verificar si el jefe está atacando y aplicar daño al jugador
+                    if (_boss.EstaAtacando())
+                    {
+                        _boss.Atacar(_posicionDelJugador);
+                    }
+
+                    // Verificar colisión simple y aplicar daño al jugador
+                    if (_boss.EstaColisionandoCon(_posicionDelJugador))
+                    {
+                        _boss.Atacar(_posicionDelJugador);
+                        _saludDelJugador -= 10; // daño por colisión
+                        JugadorSalud = _saludDelJugador;
                     }
                 }
             }
@@ -728,24 +725,14 @@ namespace Proyecto2P
             Image.FromFile(Path.Combine(bossPath, "dead", "09.png"))
         };
 
-                _boss = new Boss(new PointF(ClientSize.Width / 2, ClientSize.Height / 2), 4.0f, 200, animacionCaminar, animacionAtaque, animacionMuerte);
-            }
-
-            if (_bossAparecido)
-            {
-                if (_boss != null)
-                {
-                    _boss.Actualizar(_posicionDelJugador, _enemigos);
-                    if (_boss.EstaColisionandoCon(_posicionDelJugador))
-                    {
-                        _saludDelJugador -= 40;
-                        JugadorSalud = _saludDelJugador;
-                    }
-                }
+                _boss = new Boss(new PointF(ClientSize.Width / 2, ClientSize.Height / 2), 4.0f, 200, animacionCaminar, animacionAtaque, animacionMuerte, this);
             }
 
             Invalidate();
         }
+
+
+
 
         private void MoverJugador()
         {
@@ -780,8 +767,14 @@ namespace Proyecto2P
                 case int salud when salud < 40:
                     _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0123.png"));
                     break;
+                case int salud when salud < 50:
+                    _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0108.png"));
+                    break;
+                case int salud when salud < 60:
+                    _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0109.png"));
+                    break;
                 default:
-                    _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0124.png"));
+                    _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0111.png"));
                     break;
             }
 
@@ -824,6 +817,16 @@ namespace Proyecto2P
             }
 
             Invalidate();
+        }
+
+        public void AplicarDanioJugador(int cantidad)
+        {
+            _saludDelJugador += cantidad;
+            if (_saludDelJugador < 0)
+            {
+                _saludDelJugador = 0;
+            }
+            JugadorSalud = _saludDelJugador;
         }
 
 

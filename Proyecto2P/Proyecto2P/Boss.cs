@@ -1,7 +1,6 @@
 ﻿using Proyecto2P;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
+using System;
 using System.Windows.Forms;
 
 public class Boss
@@ -17,7 +16,10 @@ public class Boss
     private bool estaMuerto;
     private Timer _timerAnimacion;
 
-    public Boss(PointF posicionInicial, float velocidad, int salud, Image[] animacionCaminar, Image[] animacionAtaque, Image[] animacionMuerte)
+
+    private Form1 _form; // Referencia al formulario principal
+
+    public Boss(PointF posicionInicial, float velocidad, int salud, Image[] animacionCaminar, Image[] animacionAtaque, Image[] animacionMuerte, Form1 form)
     {
         Posicion = posicionInicial;
         Velocidad = velocidad;
@@ -28,6 +30,7 @@ public class Boss
         frameActual = 0;
         estaAtacando = false;
         estaMuerto = false;
+        _form = form;
 
         _timerAnimacion = new Timer();
         _timerAnimacion.Interval = 100;
@@ -64,30 +67,30 @@ public class Boss
         }
     }
 
-    public void Actualizar(PointF posicionJugador, List<Enemigo> enemigos)
+    public void Actualizar(PointF posicionJugador)
     {
-        if (!estaAtacando && !estaMuerto)
+        if (!estaMuerto)
         {
             float dx = posicionJugador.X - Posicion.X;
             float dy = posicionJugador.Y - Posicion.Y;
             float distancia = (float)Math.Sqrt(dx * dx + dy * dy);
 
-            if (distancia > 1)
+            if (!estaAtacando && distancia > 1)
             {
                 Posicion = new PointF(Posicion.X + dx / distancia * Velocidad, Posicion.Y + dy / distancia * Velocidad);
             }
 
             // Iniciar ataque si está suficientemente cerca del jugador
-            if (distancia < 150) // Ajustar el rango de ataque
+            if (distancia < 30) // Ajustar el rango de ataque
             {
-                Atacar(posicionJugador, enemigos);
+                Atacar(posicionJugador);
             }
         }
     }
 
-    public void Atacar(PointF posicionJugador, List<Enemigo> enemigos)
+    public void Atacar(PointF posicionJugador)
     {
-        if (!estaMuerto)
+        if (!estaMuerto && !estaAtacando)
         {
             estaAtacando = true;
             frameActual = 0;
@@ -96,12 +99,17 @@ public class Boss
             float dy = posicionJugador.Y - Posicion.Y;
             float distancia = (float)Math.Sqrt(dx * dx + dy * dy);
 
-            if (distancia < 150) // Ajustar el radio de ataque
+            if (distancia < 30) // Ajustar el radio de ataque
             {
                 // Hacer daño al jugador
-                Form1.AjustarSaludJugador(-30);
+                _form.AplicarDanioJugador(-30);
             }
         }
+    }
+
+    public bool EstaAtacando()
+    {
+        return estaAtacando;
     }
 
     public void Dibujar(Graphics g)
@@ -148,6 +156,6 @@ public class Boss
         float dx = Posicion.X - posicion.X;
         float dy = Posicion.Y - posicion.Y;
         float distancia = (float)Math.Sqrt(dx * dx + dy * dy);
-        return distancia < 40; // Ajustar el radio de colisión
+        return distancia < 20; // Ajustar el radio de colisión
     }
 }
