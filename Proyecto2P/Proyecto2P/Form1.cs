@@ -81,7 +81,8 @@ namespace Proyecto2P
         private int _exclamacionTitileoContador;
         private bool _mostrarExclamacion;
 
-
+        private int _puntosParaSiguienteBoss;
+        private int _incrementoPuntosBoss;
 
 
         public Form1()
@@ -114,6 +115,12 @@ namespace Proyecto2P
             _temporizadorMensajeBoss.Interval = _duracionMensajeBoss;
             _temporizadorMensajeBoss.Tick += (s, e) => _mostrarMensajeBoss = false;
 
+            // Inicializar puntos para la aparición del jefe
+            _puntosParaSiguienteBoss = 100;
+            _incrementoPuntosBoss = 200;
+
+            // ... (otros inicializadores)
+
             // Definir el directorio base para las imágenes
             string imagesPath = Path.Combine(basePath, "src");
 
@@ -129,7 +136,6 @@ namespace Proyecto2P
                 _cofreMedioAbierto = Image.FromFile(Path.Combine(imagesPath, "tile_0090.png"));
                 _cofreAbierto = Image.FromFile(Path.Combine(imagesPath, "tile_0091.png"));
                 _imagenExclamacion = Image.FromFile(Path.Combine(imagesPath, "signo.png"));
-
             }
             catch (FileNotFoundException ex)
             {
@@ -602,7 +608,7 @@ namespace Proyecto2P
                 if (_enemigos[i].EstaMuerto())
                 {
                     _enemigos.RemoveAt(i);
-                    _scoreManager.AddPoints(100); // Añadir puntos al eliminar un enemigo
+                    _scoreManager.AddPoints(5); // Añadir puntos al eliminar un enemigo
                 }
                 else if (_enemigos[i].EstaColisionandoCon(_posicionDelJugador))
                 {
@@ -635,6 +641,9 @@ namespace Proyecto2P
                     _boss = null;
                     _bossAparecido = false;
                     _enemigos.Clear(); // Desaparecer enemigos
+
+                    // Incrementar el umbral para la siguiente aparición del jefe
+                    _puntosParaSiguienteBoss += _incrementoPuntosBoss;
                 }
                 else
                 {
@@ -660,7 +669,6 @@ namespace Proyecto2P
                     // Verificar colisión simple y aplicar daño al jugador
                     if (_boss.EstaColisionandoCon(_posicionDelJugador))
                     {
-                        _boss.Atacar(_posicionDelJugador);
                         _saludDelJugador -= 10; // daño por colisión
                         JugadorSalud = _saludDelJugador;
                     }
@@ -685,7 +693,8 @@ namespace Proyecto2P
                 MoverJugador();
             }
 
-            if (_scoreManager.GetScore() >= 100 && !_bossAparecido)
+            // Verificar si es necesario generar un nuevo jefe basado en los puntos del jugador
+            if (_scoreManager.GetScore() >= _puntosParaSiguienteBoss && !_bossAparecido)
             {
                 _bossAparecido = true;
                 _enemigos.Clear(); // Desaparecer enemigos
@@ -697,33 +706,33 @@ namespace Proyecto2P
                 // Cargar animaciones del jefe
                 string bossPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ORC");
                 Image[] animacionCaminar = {
-            Image.FromFile(Path.Combine(bossPath, "Idel", "01.png")),
-            Image.FromFile(Path.Combine(bossPath, "Idel", "02.png")),
-            Image.FromFile(Path.Combine(bossPath, "Idel", "03.png")),
-            Image.FromFile(Path.Combine(bossPath, "Idel", "04.png"))
-        };
+                Image.FromFile(Path.Combine(bossPath, "Idel", "01.png")),
+                Image.FromFile(Path.Combine(bossPath, "Idel", "02.png")),
+                Image.FromFile(Path.Combine(bossPath, "Idel", "03.png")),
+                Image.FromFile(Path.Combine(bossPath, "Idel", "04.png"))
+            };
                 Image[] animacionAtaque = {
-            Image.FromFile(Path.Combine(bossPath, "ATTACK", "01.png")),
-            Image.FromFile(Path.Combine(bossPath, "ATTACK", "02.png")),
-            Image.FromFile(Path.Combine(bossPath, "ATTACK", "03.png")),
-            Image.FromFile(Path.Combine(bossPath, "ATTACK", "04.png")),
-            Image.FromFile(Path.Combine(bossPath, "ATTACK", "05.png")),
-            Image.FromFile(Path.Combine(bossPath, "ATTACK", "06.png")),
-            Image.FromFile(Path.Combine(bossPath, "ATTACK", "07.png")),
-            Image.FromFile(Path.Combine(bossPath, "ATTACK", "08.png")),
-            Image.FromFile(Path.Combine(bossPath, "ATTACK", "09.png"))
-        };
+                Image.FromFile(Path.Combine(bossPath, "ATTACK", "01.png")),
+                Image.FromFile(Path.Combine(bossPath, "ATTACK", "02.png")),
+                Image.FromFile(Path.Combine(bossPath, "ATTACK", "03.png")),
+                Image.FromFile(Path.Combine(bossPath, "ATTACK", "04.png")),
+                Image.FromFile(Path.Combine(bossPath, "ATTACK", "05.png")),
+                Image.FromFile(Path.Combine(bossPath, "ATTACK", "06.png")),
+                Image.FromFile(Path.Combine(bossPath, "ATTACK", "07.png")),
+                Image.FromFile(Path.Combine(bossPath, "ATTACK", "08.png")),
+                Image.FromFile(Path.Combine(bossPath, "ATTACK", "09.png"))
+            };
                 Image[] animacionMuerte = {
-            Image.FromFile(Path.Combine(bossPath, "dead", "01.png")),
-            Image.FromFile(Path.Combine(bossPath, "dead", "02.png")),
-            Image.FromFile(Path.Combine(bossPath, "dead", "03.png")),
-            Image.FromFile(Path.Combine(bossPath, "dead", "04.png")),
-            Image.FromFile(Path.Combine(bossPath, "dead", "05.png")),
-            Image.FromFile(Path.Combine(bossPath, "dead", "06.png")),
-            Image.FromFile(Path.Combine(bossPath, "dead", "07.png")),
-            Image.FromFile(Path.Combine(bossPath, "dead", "08.png")),
-            Image.FromFile(Path.Combine(bossPath, "dead", "09.png"))
-        };
+                Image.FromFile(Path.Combine(bossPath, "dead", "01.png")),
+                Image.FromFile(Path.Combine(bossPath, "dead", "02.png")),
+                Image.FromFile(Path.Combine(bossPath, "dead", "03.png")),
+                Image.FromFile(Path.Combine(bossPath, "dead", "04.png")),
+                Image.FromFile(Path.Combine(bossPath, "dead", "05.png")),
+                Image.FromFile(Path.Combine(bossPath, "dead", "06.png")),
+                Image.FromFile(Path.Combine(bossPath, "dead", "07.png")),
+                Image.FromFile(Path.Combine(bossPath, "dead", "08.png")),
+                Image.FromFile(Path.Combine(bossPath, "dead", "09.png"))
+            };
 
                 _boss = new Boss(new PointF(ClientSize.Width / 2, ClientSize.Height / 2), 4.0f, 200, animacionCaminar, animacionAtaque, animacionMuerte, this);
             }
