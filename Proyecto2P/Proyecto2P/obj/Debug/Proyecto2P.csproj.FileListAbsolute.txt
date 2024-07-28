@@ -38,3 +38,13 @@ C:\Users\USER\Desktop\5toSemestre\GRAF\JUEGO\Gr-fica-Proyecto-P2\Proyecto2P\Proy
 C:\Users\USER\Desktop\5toSemestre\GRAF\JUEGO\Gr-fica-Proyecto-P2\Proyecto2P\Proyecto2P\obj\Debug\Proyecto2P.csproj.CoreCompileInputs.cache
 C:\Users\USER\Desktop\5toSemestre\GRAF\JUEGO\Gr-fica-Proyecto-P2\Proyecto2P\Proyecto2P\obj\Debug\Proyecto2P.exe
 C:\Users\USER\Desktop\5toSemestre\GRAF\JUEGO\Gr-fica-Proyecto-P2\Proyecto2P\Proyecto2P\obj\Debug\Proyecto2P.pdb
+C:\Users\Marcelo Echeverría Y\Desktop\Gr-fica-Proyecto-P2\Proyecto2P\Proyecto2P\bin\Debug\Proyecto2P.exe.config
+C:\Users\Marcelo Echeverría Y\Desktop\Gr-fica-Proyecto-P2\Proyecto2P\Proyecto2P\bin\Debug\Proyecto2P.exe
+C:\Users\Marcelo Echeverría Y\Desktop\Gr-fica-Proyecto-P2\Proyecto2P\Proyecto2P\bin\Debug\Proyecto2P.pdb
+C:\Users\Marcelo Echeverría Y\Desktop\Gr-fica-Proyecto-P2\Proyecto2P\Proyecto2P\obj\Debug\Proyecto2P.csproj.AssemblyReference.cache
+C:\Users\Marcelo Echeverría Y\Desktop\Gr-fica-Proyecto-P2\Proyecto2P\Proyecto2P\obj\Debug\Proyecto2P.Form1.resources
+C:\Users\Marcelo Echeverría Y\Desktop\Gr-fica-Proyecto-P2\Proyecto2P\Proyecto2P\obj\Debug\Proyecto2P.Properties.Resources.resources
+C:\Users\Marcelo Echeverría Y\Desktop\Gr-fica-Proyecto-P2\Proyecto2P\Proyecto2P\obj\Debug\Proyecto2P.csproj.GenerateResource.cache
+C:\Users\Marcelo Echeverría Y\Desktop\Gr-fica-Proyecto-P2\Proyecto2P\Proyecto2P\obj\Debug\Proyecto2P.csproj.CoreCompileInputs.cache
+C:\Users\Marcelo Echeverría Y\Desktop\Gr-fica-Proyecto-P2\Proyecto2P\Proyecto2P\obj\Debug\Proyecto2P.exe
+C:\Users\Marcelo Echeverría Y\Desktop\Gr-fica-Proyecto-P2\Proyecto2P\Proyecto2P\obj\Debug\Proyecto2P.pdb

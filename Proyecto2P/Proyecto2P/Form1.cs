@@ -318,8 +318,8 @@ namespace Proyecto2P
             {
                 Size = this.ClientSize,
                 Location = new Point(0, 0),
-                BackColor = Color.FromArgb(100, 0, 0, 0), 
-                Visible = true 
+                BackColor = Color.FromArgb(100, 0, 0, 0),
+                Visible = true
             };
 
             Label titulo = new Label
@@ -332,58 +332,27 @@ namespace Proyecto2P
                 BackColor = Color.FromArgb(0, 0, 0, 0),
             };
 
-            Button btnIniciar = new Button
-            {
-                Text = "Iniciar Juego",
-                Location = new Point((panelInicio.Width / 2) - 50, (panelInicio.Height / 2) - 25),
-                Size = new Size(100, 50)
-            };
-            btnIniciar.Click += (s, e) => { 
+            Button btnIniciar = CreateStyledButton("Iniciar Juego", (panelInicio.Width / 2) - 75, (panelInicio.Height / 2) - 25);
+            btnIniciar.Click += (s, e) => {
                 panelInicio.Visible = false;
-
-                //Cambiar el personaje antes de iniciar
                 cambiarPersonaje();
-
-                // Ocultar el cursor del mouse
                 this.Cursor = OcultarCursor();
-
-                // Inicializar la variable de estado de movimiento del jugador
                 _puedeMoverse = false;
-
-                // Iniciar animación
                 _posicionDelJugador = _posicionInicialJugador;
                 _animacionIniciada = true;
                 _rotacionBloqueada = true;
-
-
-                // Iniciar el temporizador
                 _temporizador.Start();
-
-                //Bloquear mouse dentro de la ventana
                 BloquearCursor();
-
             };
 
-            Button btnSalir = new Button
-            {
-                Text = "Salir",
-                Location = new Point((panelInicio.Width / 2) - 50, (panelInicio.Height / 2) + 95),
-                Size = new Size(100, 50)
-            };
+            Button btnSalir = CreateStyledButton("Salir", (panelInicio.Width / 2) - 75, (panelInicio.Height / 2) + 95);
             btnSalir.Click += (s, e) => Application.Exit();
 
-            Button btnSeleccionPersonaje = new Button
-            {
-                Text = "Selección de Personaje",
-                Location = new Point((panelInicio.Width / 2) - 75, (panelInicio.Height / 2) + 35),
-                Size = new Size(150, 50)
-            };
-            btnSeleccionPersonaje.Click += (s, e) => { 
+            Button btnSeleccionPersonaje = CreateStyledButton("Selección de Personaje", (panelInicio.Width / 2) - 75, (panelInicio.Height / 2) + 35);
+            btnSeleccionPersonaje.Click += (s, e) => {
                 panelSeleccionPersonaje.Visible = true;
                 panelInicio.Visible = false;
-
             };
-
 
             panelInicio.Controls.Add(titulo);
             panelInicio.Controls.Add(btnIniciar);
@@ -391,73 +360,43 @@ namespace Proyecto2P
             panelInicio.Controls.Add(btnSalir);
             this.Controls.Add(panelInicio);
 
-
-
-
-
             // Panel de selección de personaje
             panelSeleccionPersonaje = new Panel
             {
                 Size = this.ClientSize,
                 Location = new Point(0, 0),
-                BackColor = Color.FromArgb(200, 0, 0, 0), // Fondo semi-transparente
-                Visible = false // Inicialmente invisible
+                BackColor = Color.FromArgb(200, 0, 0, 0),
+                Visible = false
             };
 
-            Button btnMago = new Button
-            {
-                Text = "Mago",
-                Location = new Point((panelSeleccionPersonaje.Width / 2) - 50, (panelSeleccionPersonaje.Height / 2) - 100),
-                Size = new Size(100, 50)
-            };
+            Button btnMago = CreateStyledButton("Mago", (panelSeleccionPersonaje.Width / 2) - 75, (panelSeleccionPersonaje.Height / 2) - 100);
             btnMago.Click += (s, e) => {
                 personajeSeleccionado = "Mago";
                 panelSeleccionPersonaje.Visible = false;
                 panelInicio.Visible = true;
-
             };
 
-            Button btnCaballero = new Button
-            {
-                Text = "Caballero",
-                Location = new Point((panelSeleccionPersonaje.Width / 2) - 50, (panelSeleccionPersonaje.Height / 2) - 30),
-                Size = new Size(100, 50)
-            };
+            Button btnCaballero = CreateStyledButton("Caballero", (panelSeleccionPersonaje.Width / 2) - 75, (panelSeleccionPersonaje.Height / 2) - 30);
             btnCaballero.Click += (s, e) =>
             {
                 personajeSeleccionado = "Caballero";
                 panelSeleccionPersonaje.Visible = false;
                 panelInicio.Visible = true;
-
             };
 
-
-            Button btnEnano = new Button
-            {
-                Text = "Enano",
-                Location = new Point((panelSeleccionPersonaje.Width / 2) - 50, (panelSeleccionPersonaje.Height / 2) + 40),
-                Size = new Size(100, 50)
-            };
+            Button btnEnano = CreateStyledButton("Enano", (panelSeleccionPersonaje.Width / 2) - 75, (panelSeleccionPersonaje.Height / 2) + 40);
             btnEnano.Click += (s, e) => {
                 personajeSeleccionado = "Enano";
                 panelSeleccionPersonaje.Visible = false;
                 panelInicio.Visible = true;
-
             };
 
-            Button btnAldeano = new Button
-            {
-                Text = "Aldeano",
-                Location = new Point((panelSeleccionPersonaje.Width / 2) - 50, (panelSeleccionPersonaje.Height / 2) + 110),
-                Size = new Size(100, 50)
-            };
+            Button btnAldeano = CreateStyledButton("Aldeano", (panelSeleccionPersonaje.Width / 2) - 75, (panelSeleccionPersonaje.Height / 2) + 110);
             btnAldeano.Click += (s, e) => {
                 personajeSeleccionado = "Aldeano";
                 panelSeleccionPersonaje.Visible = false;
                 panelInicio.Visible = true;
-
             };
-
 
             panelSeleccionPersonaje.Controls.Add(btnMago);
             panelSeleccionPersonaje.Controls.Add(btnCaballero);
@@ -465,16 +404,13 @@ namespace Proyecto2P
             panelSeleccionPersonaje.Controls.Add(btnAldeano);
             this.Controls.Add(panelSeleccionPersonaje);
 
-
-
-
             // Panel de pausa
             panelPausa = new Panel
             {
                 Size = this.ClientSize,
                 Location = new Point(0, 0),
-                BackColor = Color.FromArgb(200, 0, 0, 0), // Fondo semi-transparente
-                Visible = false // Inicialmente invisible
+                BackColor = Color.FromArgb(200, 0, 0, 0),
+                Visible = false
             };
 
             Label pausaTitulo = new Label
@@ -487,12 +423,7 @@ namespace Proyecto2P
                 BackColor = Color.FromArgb(0, 0, 0, 0),
             };
 
-            Button btnReanudar = new Button
-            {
-                Text = "Reanudar",
-                Location = new Point((panelPausa.Width / 2) - 50, (panelPausa.Height / 2) - 25),
-                Size = new Size(100, 50)
-            };
+            Button btnReanudar = CreateStyledButton("Reanudar", (panelPausa.Width / 2) - 75, (panelPausa.Height / 2) - 25);
             btnReanudar.Click += (s, e) => {
                 _temporizador.Start();
                 panelPausa.Visible = false;
@@ -500,20 +431,10 @@ namespace Proyecto2P
                 BloquearCursor();
             };
 
-            Button btnReiniciarPausa = new Button
-            {
-                Text = "Reiniciar",
-                Location = new Point((panelPausa.Width / 2) - 50, (panelPausa.Height / 2) + 35),
-                Size = new Size(100, 50)
-            };
+            Button btnReiniciarPausa = CreateStyledButton("Reiniciar", (panelPausa.Width / 2) - 75, (panelPausa.Height / 2) + 35);
             btnReiniciarPausa.Click += (s, e) => ReiniciarJuego();
 
-            Button btnSalirPausa = new Button
-            {
-                Text = "Salir",
-                Location = new Point((panelPausa.Width / 2) - 50, (panelPausa.Height / 2) + 95),
-                Size = new Size(100, 50)
-            };
+            Button btnSalirPausa = CreateStyledButton("Salir", (panelPausa.Width / 2) - 75, (panelPausa.Height / 2) + 95);
             btnSalirPausa.Click += (s, e) => Application.Exit();
 
             panelPausa.Controls.Add(pausaTitulo);
@@ -521,13 +442,6 @@ namespace Proyecto2P
             panelPausa.Controls.Add(btnReiniciarPausa);
             panelPausa.Controls.Add(btnSalirPausa);
             this.Controls.Add(panelPausa);
-
-
-
-
-
-
-
 
             // Panel de Game Over
             panelGameOver = new Panel
@@ -548,32 +462,16 @@ namespace Proyecto2P
                 BackColor = Color.FromArgb(0, 0, 0, 0),
             };
 
-            Button btnReiniciar = new Button
-            {
-                Text = "Reiniciar",
-                Location = new Point((panelGameOver.Width / 2) - 50, (panelGameOver.Height / 2) + 20),
-                Size = new Size(100, 50)
-            };
+            Button btnReiniciar = CreateStyledButton("Reiniciar", (panelGameOver.Width / 2) - 75, (panelGameOver.Height / 2) + 20);
             btnReiniciar.Click += (s, e) => ReiniciarJuego();
 
-            Button btnSalirGameOver = new Button
-            {
-                Text = "Salir",
-                Location = new Point((panelGameOver.Width / 2) - 50, (panelGameOver.Height / 2) + 90),
-                Size = new Size(100, 50)
-            };
+            Button btnSalirGameOver = CreateStyledButton("Salir", (panelGameOver.Width / 2) - 75, (panelGameOver.Height / 2) + 90);
             btnSalirGameOver.Click += (s, e) => Application.Exit();
 
             panelGameOver.Controls.Add(gameOverTitulo);
             panelGameOver.Controls.Add(btnReiniciar);
             panelGameOver.Controls.Add(btnSalirGameOver);
             this.Controls.Add(panelGameOver);
-
-
-
-
-
-
 
             // Panel de Mejora
             panelMejora = new Panel
@@ -594,12 +492,7 @@ namespace Proyecto2P
                 BackColor = Color.FromArgb(0, 0, 0, 0),
             };
 
-            Button btnAumentarAtaque = new Button
-            {
-                Text = "Aumentar Ataque",
-                Location = new Point((panelMejora.Width / 2) - 75, (panelMejora.Height / 2) + 20),
-                Size = new Size(150, 50)
-            };
+            Button btnAumentarAtaque = CreateStyledButton("Aumentar Ataque", (panelMejora.Width / 2) - 75, (panelMejora.Height / 2) + 20);
             btnAumentarAtaque.Click += (s, e) =>
             {
                 JugadorDanio += 5;
@@ -609,12 +502,7 @@ namespace Proyecto2P
                 _temporizador.Start();
             };
 
-            Button btnCurarse = new Button
-            {
-                Text = "Curarse",
-                Location = new Point((panelMejora.Width / 2) - 75, (panelMejora.Height / 2) + 90),
-                Size = new Size(150, 50)
-            };
+            Button btnCurarse = CreateStyledButton("Curarse", (panelMejora.Width / 2) - 75, (panelMejora.Height / 2) + 90);
             btnCurarse.Click += (s, e) =>
             {
                 _saludDelJugador = Math.Min(_saludDelJugador + 30, JugadorSaludMax);
@@ -628,10 +516,23 @@ namespace Proyecto2P
             panelMejora.Controls.Add(btnAumentarAtaque);
             panelMejora.Controls.Add(btnCurarse);
             this.Controls.Add(panelMejora);
+        }
 
-
-
-
+        private Button CreateStyledButton(string text, int x, int y)
+        {
+            Button button = new Button
+            {
+                Text = text,
+                Location = new Point(x, y),
+                Size = new Size(150, 50),
+                BackColor = Color.Black,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Arial", 12, FontStyle.Bold)
+            };
+            button.FlatAppearance.BorderSize = 1;
+            button.FlatAppearance.BorderColor = Color.White;
+            return button;
         }
 
 
