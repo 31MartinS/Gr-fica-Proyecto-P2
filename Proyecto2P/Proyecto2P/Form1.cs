@@ -1010,7 +1010,7 @@ namespace Proyecto2P
                 Image.FromFile(Path.Combine(bossPath, "dead", "08.png")),
                 Image.FromFile(Path.Combine(bossPath, "dead", "09.png"))
             };
-                _boss = new Boss(new PointF(ClientSize.Width / 2, ClientSize.Height / 2), 4.0f, 200 + 200 * _derrotados, animacionCaminar, animacionAtaque, animacionMuerte, this);
+                _boss = new Boss(new PointF(ClientSize.Width / 2, ClientSize.Height / 2), 5.5f, 200 + 200 * _derrotados, animacionCaminar, animacionAtaque, animacionMuerte, this);
             }
 
             Invalidate();
