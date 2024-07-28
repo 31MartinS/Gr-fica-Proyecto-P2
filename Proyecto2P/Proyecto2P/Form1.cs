@@ -10,14 +10,15 @@ namespace Proyecto2P
 {
     public partial class Form1 : Form
     {
-        public static int JugadorSalud { get; set; }
+        public int _saludDelJugador;
+        public int JugadorDanio;
+        public int JugadorSaludMax;
         private Timer _temporizador;
         private List<Bala> _balas;
         private List<Enemigo> _enemigos;
         private Random _aleatorio;
         private int _temporizadorDeAparicionDeEnemigos;
         private int _incrementoDeSaludDeEnemigos;
-        private int _saludDelJugador;
         private PointF _posicionDelJugador;
         private float _rotacionDelJugador;
         private Boss _boss;
@@ -29,6 +30,10 @@ namespace Proyecto2P
         private Image _imagenBala;
         private Image _imagenFondo;
         private Image _imagenMira;
+        private Image _corazon;
+        private Image _medioCorazon;
+        private Image _corazonVacio;
+        private Image _espada;
 
 
 
@@ -48,10 +53,13 @@ namespace Proyecto2P
         private int _derrotados;
 
 
-        // Variables para los paneles de menú
+        // Variables para los paneles de menus
         private Panel panelInicio;
         private Panel panelPausa;
         private Panel panelSeleccionPersonaje;
+        private Panel panelGameOver;
+        private Panel panelMejora;
+
 
         //Personaje
         private string personajeSeleccionado = "Mago";
@@ -99,6 +107,9 @@ namespace Proyecto2P
             this.KeyPreview = true;
             this.KeyDown += new KeyEventHandler(AlPresionarTecla);
             this.KeyUp += new KeyEventHandler(AlSoltarTecla);
+            this.Load += (s, e) => BloquearCursor();
+            this.FormClosing += (s, e) => LiberarCursor();
+
 
             // Inicializar variables
             _temporizador = new Timer();
@@ -110,8 +121,9 @@ namespace Proyecto2P
             _aleatorio = new Random();
             _temporizadorDeAparicionDeEnemigos = 0;
             _incrementoDeSaludDeEnemigos = 0;
-            _saludDelJugador = 100;
-            JugadorSalud = _saludDelJugador;
+            JugadorSaludMax = 100;
+            _saludDelJugador = JugadorSaludMax;
+            JugadorDanio = 10;
             _bossAparecido = false;
             _boss = null;
             saludJefe = 200;
@@ -146,6 +158,10 @@ namespace Proyecto2P
                 _cofreMedioAbierto = Image.FromFile(Path.Combine(imagesPath, "tile_0090.png"));
                 _cofreAbierto = Image.FromFile(Path.Combine(imagesPath, "tile_0091.png"));
                 _imagenExclamacion = Image.FromFile(Path.Combine(imagesPath, "signo.png"));
+                _corazon = Image.FromFile(Path.Combine(imagesPath, "Corazon.png"));
+                _medioCorazon = Image.FromFile(Path.Combine(imagesPath, "MedioCorazon.png"));
+                _corazonVacio = Image.FromFile(Path.Combine(imagesPath, "CorazonVacio.png"));
+                _espada = Image.FromFile(Path.Combine(imagesPath, "espada.png"));
             }
             catch (FileNotFoundException ex)
             {
@@ -207,18 +223,30 @@ namespace Proyecto2P
                     case "Mago":
                         _imagenJugador = Image.FromFile(Path.Combine(imagesPath, "tile_0084.png"));
                         _imagenBala = Image.FromFile(Path.Combine(imagesPath, "tile_0113.png"));
+                        JugadorSaludMax = 100;
+                        _saludDelJugador = JugadorSaludMax;
+                        JugadorDanio = 15;
                         break;
                     case "Caballero":
                         _imagenJugador = Image.FromFile(Path.Combine(imagesPath, "tile_0097.png"));
                         _imagenBala = Image.FromFile(Path.Combine(imagesPath, "tile_0106.png"));
+                        JugadorSaludMax = 150;
+                        _saludDelJugador = JugadorSaludMax;
+                        JugadorDanio = 10;
                         break;
                     case "Enano":
                         _imagenJugador = Image.FromFile(Path.Combine(imagesPath, "tile_0087.png"));
                         _imagenBala = Image.FromFile(Path.Combine(imagesPath, "tile_0118.png"));
+                        JugadorSaludMax = 120;
+                        _saludDelJugador = JugadorSaludMax;
+                        JugadorDanio = 20;
                         break;
                     case "Aldeano":
                         _imagenJugador = Image.FromFile(Path.Combine(imagesPath, "tile_0088.png"));
                         _imagenBala = Image.FromFile(Path.Combine(imagesPath, "tile_0103.png"));
+                        JugadorSaludMax = 80;
+                        _saludDelJugador = JugadorSaludMax;
+                        JugadorDanio = 5;
                         break;
                     default:
                         throw new Exception("Personaje no reconocido");
@@ -245,6 +273,43 @@ namespace Proyecto2P
             Icon icon = Icon.FromHandle(ptr);
             return new Cursor(icon.Handle);
         }
+
+
+        private void ReiniciarJuego()
+        {
+            // Detener el temporizador y ocultar los paneles
+            _temporizador.Stop();
+            panelGameOver.Visible = false;
+            panelPausa.Visible = false;
+
+            // Restablecer la salud del jugador
+            _saludDelJugador = JugadorSaludMax;
+
+            // Limpiar listas de balas y enemigos
+            _balas.Clear();
+            _enemigos.Clear();
+
+            // Restablecer otras variables de estado
+            _bossAparecido = false;
+            _boss = null;
+            _puntosParaSiguienteBoss = 100;
+            _rotacionDelJugador = 0;
+            _posicionDelJugador = _posicionInicialJugador;
+            _scoreManager.Reset();
+            _incrementoDeSaludDeEnemigos = 0;
+            _temporizadorDeAparicionDeEnemigos = 0;
+            _derrotados = 0;
+
+            // Mostrar el panel de inicio
+            panelInicio.Visible = true;
+            this.Cursor = Cursors.Default;
+
+            // Musica
+            _player.PlayLooping();
+
+        }
+
+
 
         private void InicializarPanelesDeMenu()
         {
@@ -294,11 +359,9 @@ namespace Proyecto2P
                 // Iniciar el temporizador
                 _temporizador.Start();
 
-                
-                // Posición inicial del jugador
-                //_posicionDelJugador = new PointF(ClientSize.Width / 2, ClientSize.Height / 2);
+                //Bloquear mouse dentro de la ventana
+                BloquearCursor();
 
-                
             };
 
             Button btnSalir = new Button
@@ -402,6 +465,9 @@ namespace Proyecto2P
             panelSeleccionPersonaje.Controls.Add(btnAldeano);
             this.Controls.Add(panelSeleccionPersonaje);
 
+
+
+
             // Panel de pausa
             panelPausa = new Panel
             {
@@ -428,23 +494,144 @@ namespace Proyecto2P
                 Size = new Size(100, 50)
             };
             btnReanudar.Click += (s, e) => {
-                panelPausa.Visible = false;
                 _temporizador.Start();
-                this.Cursor = OcultarCursor(); // Ocultar el cursor al reanudar
+                panelPausa.Visible = false;
+                this.Cursor = OcultarCursor();
+                BloquearCursor();
             };
+
+            Button btnReiniciarPausa = new Button
+            {
+                Text = "Reiniciar",
+                Location = new Point((panelPausa.Width / 2) - 50, (panelPausa.Height / 2) + 35),
+                Size = new Size(100, 50)
+            };
+            btnReiniciarPausa.Click += (s, e) => ReiniciarJuego();
 
             Button btnSalirPausa = new Button
             {
                 Text = "Salir",
-                Location = new Point((panelPausa.Width / 2) - 50, (panelPausa.Height / 2) + 35),
+                Location = new Point((panelPausa.Width / 2) - 50, (panelPausa.Height / 2) + 95),
                 Size = new Size(100, 50)
             };
             btnSalirPausa.Click += (s, e) => Application.Exit();
 
             panelPausa.Controls.Add(pausaTitulo);
             panelPausa.Controls.Add(btnReanudar);
+            panelPausa.Controls.Add(btnReiniciarPausa);
             panelPausa.Controls.Add(btnSalirPausa);
             this.Controls.Add(panelPausa);
+
+
+
+
+
+
+
+
+            // Panel de Game Over
+            panelGameOver = new Panel
+            {
+                Size = this.ClientSize,
+                Location = new Point(0, 0),
+                BackColor = Color.FromArgb(200, 0, 0, 0),
+                Visible = false
+            };
+
+            Label gameOverTitulo = new Label
+            {
+                Text = "YOU DIED",
+                ForeColor = Color.Red,
+                Font = new Font("Arial Black", 48, FontStyle.Bold),
+                AutoSize = true,
+                Location = new Point((panelGameOver.Width / 2) - 160, (panelGameOver.Height / 2) - 100),
+                BackColor = Color.FromArgb(0, 0, 0, 0),
+            };
+
+            Button btnReiniciar = new Button
+            {
+                Text = "Reiniciar",
+                Location = new Point((panelGameOver.Width / 2) - 50, (panelGameOver.Height / 2) + 20),
+                Size = new Size(100, 50)
+            };
+            btnReiniciar.Click += (s, e) => ReiniciarJuego();
+
+            Button btnSalirGameOver = new Button
+            {
+                Text = "Salir",
+                Location = new Point((panelGameOver.Width / 2) - 50, (panelGameOver.Height / 2) + 90),
+                Size = new Size(100, 50)
+            };
+            btnSalirGameOver.Click += (s, e) => Application.Exit();
+
+            panelGameOver.Controls.Add(gameOverTitulo);
+            panelGameOver.Controls.Add(btnReiniciar);
+            panelGameOver.Controls.Add(btnSalirGameOver);
+            this.Controls.Add(panelGameOver);
+
+
+
+
+
+
+
+            // Panel de Mejora
+            panelMejora = new Panel
+            {
+                Size = this.ClientSize,
+                Location = new Point(0, 0),
+                BackColor = Color.FromArgb(200, 0, 0, 0),
+                Visible = false
+            };
+
+            Label mejoraTitulo = new Label
+            {
+                Text = "Elige una mejora",
+                ForeColor = Color.White,
+                Font = new Font("Arial Black", 24, FontStyle.Bold),
+                AutoSize = true,
+                Location = new Point((panelMejora.Width / 2) - 140, (panelMejora.Height / 2) - 100),
+                BackColor = Color.FromArgb(0, 0, 0, 0),
+            };
+
+            Button btnAumentarAtaque = new Button
+            {
+                Text = "Aumentar Ataque",
+                Location = new Point((panelMejora.Width / 2) - 75, (panelMejora.Height / 2) + 20),
+                Size = new Size(150, 50)
+            };
+            btnAumentarAtaque.Click += (s, e) =>
+            {
+                JugadorDanio += 5;
+                panelMejora.Visible = false;
+                this.Cursor = OcultarCursor();
+                BloquearCursor();
+                _temporizador.Start();
+            };
+
+            Button btnCurarse = new Button
+            {
+                Text = "Curarse",
+                Location = new Point((panelMejora.Width / 2) - 75, (panelMejora.Height / 2) + 90),
+                Size = new Size(150, 50)
+            };
+            btnCurarse.Click += (s, e) =>
+            {
+                _saludDelJugador = Math.Min(_saludDelJugador + 30, JugadorSaludMax);
+                panelMejora.Visible = false;
+                this.Cursor = OcultarCursor();
+                BloquearCursor();
+                _temporizador.Start();
+            };
+
+            panelMejora.Controls.Add(mejoraTitulo);
+            panelMejora.Controls.Add(btnAumentarAtaque);
+            panelMejora.Controls.Add(btnCurarse);
+            this.Controls.Add(panelMejora);
+
+
+
+
         }
 
 
@@ -510,22 +697,20 @@ namespace Proyecto2P
 
 
                 // Dibujar HUD
-                g.DrawString($"Vida: {_saludDelJugador}", new Font("Arial", 16), Brushes.White, 10, 10);
-                g.DrawString($"Puntos: {_scoreManager.GetScore()}", new Font("Arial", 16), Brushes.White, 10, 30);
+                DibujarVida(g);
+                DibujarAtaque(g);
+                g.DrawString($"Puntos: {_scoreManager.GetScore()}", new Font("Arial", 16), Brushes.White, 10, 115);
             }
             else if (_saludDelJugador <= 0)
             {
-                // Dibujar mensaje de "You Died" con "Arial Black" o "Impact"
-                Font font = new Font("Arial Black", 48, FontStyle.Bold);
-                SizeF textSize = g.MeasureString("YOU DIED", font);
-                float x = (ClientSize.Width - textSize.Width) / 2;
-                float y = (ClientSize.Height - textSize.Height) / 2;
-                g.DrawString("YOU DIED", font, Brushes.Red, x, y);
+                // Detener el temporizador y mostrar el panel de Game Over
+                _temporizador.Stop();
+                panelGameOver.Visible = true;
 
-                // Mostrar el cursor del mouse y detener musica
+                // Mostrar el cursor del mouse y detener la música
                 this.Cursor = Cursors.Default;
                 _player.Stop();
-
+                LiberarCursor();
             }
 
             // Dibujar mensaje del jefe
@@ -550,7 +735,7 @@ namespace Proyecto2P
             // Dibujar la barra de vida del jefe
             if (_bossAparecido && _boss != null)
             {
-                float healthPercentage = (float)_boss.Salud / (200f + 200 * _derrotados); // Suponiendo que 200 es la salud máxima
+                float healthPercentage = (float)_boss.Salud / (200f + 200 * _derrotados);
                 int barWidth = (int)(ClientSize.Width * healthPercentage);
                 g.FillRectangle(Brushes.Green, 0, ClientSize.Height - 20, barWidth, 20);
                 g.DrawRectangle(Pens.Black, 0, ClientSize.Height - 20, ClientSize.Width, 20);
@@ -578,6 +763,44 @@ namespace Proyecto2P
                 _rotacionDelJugador = (float)(Math.Atan2(dy, dx) * 180.0 / Math.PI);
             }
         }
+
+        private void DibujarVida(Graphics g)
+        {
+            int corazonAncho = _corazon.Width / 2;
+            int corazonAltura = _corazon.Height / 2;
+            int xInicial = 10;
+            int yInicial = 10;
+
+            for (int i = 0; i < JugadorSaludMax / 20; i++)
+            {
+                if (_saludDelJugador >= (i + 1) * 20)
+                {
+                    g.DrawImage(_corazon, xInicial + i * corazonAncho, yInicial, corazonAncho, corazonAltura);
+                }
+                else if (_saludDelJugador >= i * 20 + 10)
+                {
+                    g.DrawImage(_medioCorazon, xInicial + i * corazonAncho, yInicial, corazonAncho, corazonAltura);
+                }
+                else
+                {
+                    g.DrawImage(_corazonVacio, xInicial + i * corazonAncho, yInicial, corazonAncho, corazonAltura);
+                }
+            }
+        }
+
+        private void DibujarAtaque(Graphics g)
+        {
+            int espadaAncho = _espada.Width / 9;
+            int espadaAltura = _espada.Height / 9;
+            int xInicial = 10;
+            int yInicial = 50;
+
+            for (int i = 0; i < JugadorDanio / 5; i++)
+            {
+                g.DrawImage(_espada, xInicial + i * espadaAncho, yInicial, espadaAncho, espadaAltura);
+            }
+        }
+
 
 
         private void AlPresionarMouse(object sender, MouseEventArgs e)
@@ -662,7 +885,6 @@ namespace Proyecto2P
                 else if (_enemigos[i].EstaColisionandoCon(_posicionDelJugador))
                 {
                     _saludDelJugador -= 10;
-                    JugadorSalud = _saludDelJugador;
                     _enemigos.RemoveAt(i);
                 }
             }
@@ -674,7 +896,7 @@ namespace Proyecto2P
                 {
                     if (_balas[i].EstaColisionandoCon(_enemigos[j].Posicion))
                     {
-                        _enemigos[j].RecibirDanio(10);
+                        _enemigos[j].RecibirDanio(JugadorDanio);
                         _balas.RemoveAt(i);
                         break;
                     }
@@ -691,6 +913,12 @@ namespace Proyecto2P
                     _bossAparecido = false;
                     _enemigos.Clear(); // Desaparecer enemigos
 
+                    // Mostrar el panel de mejora
+                    panelMejora.Visible = true;
+                    this.Cursor = Cursors.Default;
+                    _temporizador.Stop();
+                    LiberarCursor();
+
                     // Incrementar el umbral para la siguiente aparición del jefe
                     _puntosParaSiguienteBoss += _incrementoPuntosBoss;
                     _derrotados++;
@@ -701,7 +929,7 @@ namespace Proyecto2P
                     {
                         if (_balas[i].EstaColisionandoCon(_boss.Posicion))
                         {
-                            _boss.RecibirDanio(10);
+                            _boss.RecibirDanio(JugadorDanio);
                             _balas.RemoveAt(i);
                             break;
                         }
@@ -720,7 +948,6 @@ namespace Proyecto2P
                     if (_boss.EstaColisionandoCon(_posicionDelJugador))
                     {
                         _saludDelJugador -= 10; // daño por colisión
-                        JugadorSalud = _saludDelJugador;
                     }
                 }
             }
@@ -832,6 +1059,9 @@ namespace Proyecto2P
                 case Keys.Escape:
                     PausarJuego();
                     break;
+                case Keys.Space:
+                    e.SuppressKeyPress = true;
+                    break;
             }
         }
 
@@ -851,6 +1081,9 @@ namespace Proyecto2P
                 case Keys.D:
                     _derechaPresionado = false;
                     break;
+                case Keys.Space:
+                    e.SuppressKeyPress = true;
+                    break;
             }
         }
 
@@ -859,9 +1092,8 @@ namespace Proyecto2P
             _temporizador.Stop();
             panelPausa.Visible = true;
             this.Cursor = Cursors.Default;
+            LiberarCursor();
         }
-
-
 
 
 
@@ -904,18 +1136,15 @@ namespace Proyecto2P
 
                     break;
                 default:
-
+                    if(_derrotados > 2)
+                    {
+                        _incrementoDeSaludDeEnemigos++;
+                    }
                     break;
             }
 
             PointF posicion = new PointF(_aleatorio.Next(ClientSize.Width), _aleatorio.Next(ClientSize.Height));
             _enemigos.Add(new Enemigo(posicion, _incrementoDeSaludDeEnemigos, _imagenEnemigo, _incrementoDeSaludDeEnemigos));
-        }
-
-        public static void AjustarSaludJugador(int cantidad)
-        {
-            JugadorSalud += cantidad;
-            if (JugadorSalud < 0) JugadorSalud = 0;
         }
 
 
@@ -955,9 +1184,18 @@ namespace Proyecto2P
             {
                 _saludDelJugador = 0;
             }
-            JugadorSalud = _saludDelJugador;
         }
 
+        private void BloquearCursor()
+        {
+            Rectangle rect = this.RectangleToScreen(this.ClientRectangle);
+            Cursor.Clip = rect;
+        }
+
+        private void LiberarCursor()
+        {
+            Cursor.Clip = Rectangle.Empty;
+        }
 
     }
 }
