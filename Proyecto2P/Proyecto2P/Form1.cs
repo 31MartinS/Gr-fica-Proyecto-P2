@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Media;
+//using System.Runtime.InteropServices;
+
 
 namespace Proyecto2P
 {
@@ -24,6 +26,18 @@ namespace Proyecto2P
         private Boss _boss;
         private bool _bossAparecido;
 
+        public int _vidaMago;
+        public int _vidaCaballero;
+        public int _vidaEnano;
+        public int _vidaAldeano;
+        public int _danoMago;
+        public int _danoCaballero;
+        public int _danoEnano;
+        public int _danoAldeano;
+
+        public int reciveDano;
+
+
         // Agregar variables para las imágenes
         private Image _imagenJugador;
         private Image _imagenEnemigo;
@@ -34,6 +48,11 @@ namespace Proyecto2P
         private Image _medioCorazon;
         private Image _corazonVacio;
         private Image _espada;
+        private Image _mago;
+        private Image _caballero;
+        private Image _enano;
+        private Image _aldeano;
+        private Image _original;
 
 
 
@@ -49,7 +68,6 @@ namespace Proyecto2P
         private bool _mostrarMensajeBoss;
         private Timer _temporizadorMensajeBoss;
         private int _duracionMensajeBoss; // Duración en milisegundos
-        private int saludJefe;
         private int _derrotados;
 
 
@@ -59,6 +77,8 @@ namespace Proyecto2P
         private Panel panelSeleccionPersonaje;
         private Panel panelGameOver;
         private Panel panelMejora;
+        private bool inicio;
+        private bool pausa;
 
 
         //Personaje
@@ -121,14 +141,27 @@ namespace Proyecto2P
             _aleatorio = new Random();
             _temporizadorDeAparicionDeEnemigos = 0;
             _incrementoDeSaludDeEnemigos = 0;
-            JugadorSaludMax = 100;
-            _saludDelJugador = JugadorSaludMax;
-            JugadorDanio = 10;
             _bossAparecido = false;
             _boss = null;
-            saludJefe = 200;
             _derrotados = 0;
 
+            _vidaMago = 100;
+            _vidaCaballero = 150;
+            _vidaEnano = 120;
+            _vidaAldeano = 80;
+
+            _danoMago = 15;
+            _danoCaballero = 10;
+            _danoEnano = 20;
+            _danoAldeano = 5;
+
+            JugadorSaludMax = _vidaMago;
+            JugadorDanio = _danoMago;
+            _saludDelJugador = JugadorSaludMax;
+            reciveDano = 0; ;
+
+            inicio = true;
+            pausa = false;
             // Inicializar ScoreManager
             _scoreManager = new ScoreManager();
 
@@ -149,7 +182,6 @@ namespace Proyecto2P
             // Cargar imágenes usando rutas relativas
             try
             {
-                _imagenJugador = Image.FromFile(Path.Combine(imagesPath, "tile_0084.png"));
                 _imagenEnemigo = Image.FromFile(Path.Combine(imagesPath, "tile_0121.png"));
                 _imagenBala = Image.FromFile(Path.Combine(imagesPath, "tile_0113.png"));
                 _imagenFondo = Image.FromFile(Path.Combine(imagesPath, "background.png"));
@@ -162,12 +194,23 @@ namespace Proyecto2P
                 _medioCorazon = Image.FromFile(Path.Combine(imagesPath, "MedioCorazon.png"));
                 _corazonVacio = Image.FromFile(Path.Combine(imagesPath, "CorazonVacio.png"));
                 _espada = Image.FromFile(Path.Combine(imagesPath, "espada.png"));
+
+                _mago = Image.FromFile(Path.Combine(imagesPath, "tile_0084.png"));
+                _caballero = Image.FromFile(Path.Combine(imagesPath, "tile_0097.png"));
+                _enano = Image.FromFile(Path.Combine(imagesPath, "tile_0087.png"));
+                _aldeano = Image.FromFile(Path.Combine(imagesPath, "tile_0088.png"));
+
+
             }
             catch (FileNotFoundException ex)
             {
                 MessageBox.Show($"Error al cargar la imagen: {ex.Message}");
                 return;
             }
+
+            _imagenJugador = _mago;
+            _original = _imagenJugador;
+
 
             string audioPath = Path.Combine(basePath, "musica", "AOG.wav");
             _player = new SoundPlayer(audioPath);
@@ -221,32 +264,40 @@ namespace Proyecto2P
                 switch (personajeSeleccionado)
                 {
                     case "Mago":
-                        _imagenJugador = Image.FromFile(Path.Combine(imagesPath, "tile_0084.png"));
+                        _imagenJugador = _mago;
                         _imagenBala = Image.FromFile(Path.Combine(imagesPath, "tile_0113.png"));
-                        JugadorSaludMax = 100;
+                        JugadorSaludMax = _vidaMago;
                         _saludDelJugador = JugadorSaludMax;
-                        JugadorDanio = 15;
+                        JugadorDanio = _danoMago;
+                        _original = _imagenJugador;
+
                         break;
                     case "Caballero":
-                        _imagenJugador = Image.FromFile(Path.Combine(imagesPath, "tile_0097.png"));
+                        _imagenJugador = _caballero;
                         _imagenBala = Image.FromFile(Path.Combine(imagesPath, "tile_0106.png"));
-                        JugadorSaludMax = 150;
+                        JugadorSaludMax = _vidaCaballero;
                         _saludDelJugador = JugadorSaludMax;
-                        JugadorDanio = 10;
+                        JugadorDanio = _danoCaballero;
+                        _original = _imagenJugador;
+
                         break;
                     case "Enano":
-                        _imagenJugador = Image.FromFile(Path.Combine(imagesPath, "tile_0087.png"));
+                        _imagenJugador = _enano;
                         _imagenBala = Image.FromFile(Path.Combine(imagesPath, "tile_0118.png"));
-                        JugadorSaludMax = 120;
+                        JugadorSaludMax = _vidaEnano;
                         _saludDelJugador = JugadorSaludMax;
-                        JugadorDanio = 20;
+                        JugadorDanio = _danoEnano;
+                        _original = _imagenJugador;
+
                         break;
                     case "Aldeano":
-                        _imagenJugador = Image.FromFile(Path.Combine(imagesPath, "tile_0088.png"));
+                        _imagenJugador = _aldeano;
                         _imagenBala = Image.FromFile(Path.Combine(imagesPath, "tile_0103.png"));
-                        JugadorSaludMax = 80;
+                        JugadorSaludMax = _vidaAldeano;
                         _saludDelJugador = JugadorSaludMax;
-                        JugadorDanio = 5;
+                        JugadorDanio = _danoAldeano;
+                        _original = _imagenJugador;
+
                         break;
                     default:
                         throw new Exception("Personaje no reconocido");
@@ -343,6 +394,8 @@ namespace Proyecto2P
                 _rotacionBloqueada = true;
                 _temporizador.Start();
                 BloquearCursor();
+                inicio = false;
+
             };
 
             Button btnSalir = CreateStyledButton("Salir", (panelInicio.Width / 2) - 75, (panelInicio.Height / 2) + 95);
@@ -354,11 +407,37 @@ namespace Proyecto2P
                 panelInicio.Visible = false;
             };
 
+            //// TrackBar para el control del volumen
+            //TrackBar volumenTrackBar = new TrackBar
+            //{
+            //    Location = new Point((panelInicio.Width / 2) - 75, (panelInicio.Height / 2) + 160),
+            //    Size = new Size(150, 45),
+            //    Minimum = 10000,
+            //    Maximum = 1000000000,
+            //    Value = 100000000 // Valor inicial
+            //};
+            //volumenTrackBar.Scroll += (s, e) =>
+            //{
+            //    VolumeControl.SetVolume(volumenTrackBar.Value);
+            //};
+
             panelInicio.Controls.Add(titulo);
             panelInicio.Controls.Add(btnIniciar);
             panelInicio.Controls.Add(btnSeleccionPersonaje);
             panelInicio.Controls.Add(btnSalir);
+            //panelInicio.Controls.Add(volumenTrackBar);
             this.Controls.Add(panelInicio);
+
+
+
+
+
+
+
+
+
+
+
 
             // Panel de selección de personaje
             panelSeleccionPersonaje = new Panel
@@ -369,13 +448,37 @@ namespace Proyecto2P
                 Visible = false
             };
 
+            PictureBox Mago = new PictureBox
+            {
+                Image = _mago,
+                Size = new Size(40, 40),
+                SizeMode = PictureBoxSizeMode.StretchImage,
+                Location = new Point((panelSeleccionPersonaje.Width / 2) - 125, (panelSeleccionPersonaje.Height / 2) - 100)
+            };
             Button btnMago = CreateStyledButton("Mago", (panelSeleccionPersonaje.Width / 2) - 75, (panelSeleccionPersonaje.Height / 2) - 100);
             btnMago.Click += (s, e) => {
                 personajeSeleccionado = "Mago";
                 panelSeleccionPersonaje.Visible = false;
                 panelInicio.Visible = true;
             };
+            Label atributosMago = new Label
+            {
+                Text = $"Vida: {_vidaMago} \nAtaque: {_danoMago}",
+                ForeColor = Color.White,
+                Font = new Font("Arial Black", 12, FontStyle.Bold),
+                AutoSize = true,
+                Location = new Point((panelSeleccionPersonaje.Width / 2) + 80, (panelSeleccionPersonaje.Height / 2) - 100),
+                BackColor = Color.FromArgb(0, 0, 0, 0),
+            };
 
+
+            PictureBox Caballero = new PictureBox
+            {
+                Image = _caballero,
+                Size = new Size(40, 40),
+                SizeMode = PictureBoxSizeMode.StretchImage,
+                Location = new Point((panelSeleccionPersonaje.Width / 2) - 125, (panelSeleccionPersonaje.Height / 2) - 30)
+            };
             Button btnCaballero = CreateStyledButton("Caballero", (panelSeleccionPersonaje.Width / 2) - 75, (panelSeleccionPersonaje.Height / 2) - 30);
             btnCaballero.Click += (s, e) =>
             {
@@ -383,26 +486,89 @@ namespace Proyecto2P
                 panelSeleccionPersonaje.Visible = false;
                 panelInicio.Visible = true;
             };
+            Label atributosCaballero = new Label
+            {
+                Text = $"Vida: {_vidaCaballero} \nAtaque: {_danoCaballero}",
+                ForeColor = Color.White,
+                Font = new Font("Arial Black", 12, FontStyle.Bold),
+                AutoSize = true,
+                Location = new Point((panelSeleccionPersonaje.Width / 2) + 80, (panelSeleccionPersonaje.Height / 2) - 30),
+                BackColor = Color.FromArgb(0, 0, 0, 0),
+            };
 
+            PictureBox Enano = new PictureBox
+            {
+                Image = _enano,
+                Size = new Size(40, 40),
+                SizeMode = PictureBoxSizeMode.StretchImage,
+                Location = new Point((panelSeleccionPersonaje.Width / 2) - 125, (panelSeleccionPersonaje.Height / 2) + 40)
+            };
             Button btnEnano = CreateStyledButton("Enano", (panelSeleccionPersonaje.Width / 2) - 75, (panelSeleccionPersonaje.Height / 2) + 40);
             btnEnano.Click += (s, e) => {
                 personajeSeleccionado = "Enano";
                 panelSeleccionPersonaje.Visible = false;
                 panelInicio.Visible = true;
             };
+            Label atributosEnano = new Label
+            {
+                Text = $"Vida: {_vidaEnano} \nAtaque: {_danoEnano}",
+                ForeColor = Color.White,
+                Font = new Font("Arial Black", 12, FontStyle.Bold),
+                AutoSize = true,
+                Location = new Point((panelSeleccionPersonaje.Width / 2) + 80, (panelSeleccionPersonaje.Height / 2) + 40),
+                BackColor = Color.FromArgb(0, 0, 0, 0),
+            };
 
+            PictureBox Aldeano = new PictureBox
+            {
+                Image = _aldeano,
+                Size = new Size(40, 40),
+                SizeMode = PictureBoxSizeMode.StretchImage,
+                Location = new Point((panelSeleccionPersonaje.Width / 2) - 125, (panelSeleccionPersonaje.Height / 2) + 110)
+            };
             Button btnAldeano = CreateStyledButton("Aldeano", (panelSeleccionPersonaje.Width / 2) - 75, (panelSeleccionPersonaje.Height / 2) + 110);
             btnAldeano.Click += (s, e) => {
                 personajeSeleccionado = "Aldeano";
                 panelSeleccionPersonaje.Visible = false;
                 panelInicio.Visible = true;
             };
+            Label atributosAldeano = new Label
+            {
+                Text = $"Vida: {_vidaAldeano} \nAtaque: {_danoAldeano}",
+                ForeColor = Color.White,
+                Font = new Font("Arial Black", 12, FontStyle.Bold),
+                AutoSize = true,
+                Location = new Point((panelSeleccionPersonaje.Width / 2) + 80, (panelSeleccionPersonaje.Height / 2) + 110),
+                BackColor = Color.FromArgb(0, 0, 0, 0),
+            };
 
+            Button btnVolver = CreateStyledButton("Volver", (panelSeleccionPersonaje.Width / 2) - 75, (panelSeleccionPersonaje.Height / 2) + 180);
+            btnVolver.Click += (s, e) => {
+                panelSeleccionPersonaje.Visible = false;
+                panelInicio.Visible = true;
+            };
+
+            panelSeleccionPersonaje.Controls.Add(Mago);
             panelSeleccionPersonaje.Controls.Add(btnMago);
+            panelSeleccionPersonaje.Controls.Add(atributosMago);
+            panelSeleccionPersonaje.Controls.Add(Caballero);
             panelSeleccionPersonaje.Controls.Add(btnCaballero);
+            panelSeleccionPersonaje.Controls.Add(atributosCaballero);
+            panelSeleccionPersonaje.Controls.Add(Enano);
             panelSeleccionPersonaje.Controls.Add(btnEnano);
+            panelSeleccionPersonaje.Controls.Add(atributosEnano);
+            panelSeleccionPersonaje.Controls.Add(Aldeano);
             panelSeleccionPersonaje.Controls.Add(btnAldeano);
+            panelSeleccionPersonaje.Controls.Add(atributosAldeano);
+            panelSeleccionPersonaje.Controls.Add(btnVolver);
+
             this.Controls.Add(panelSeleccionPersonaje);
+
+
+
+
+
+
 
             // Panel de pausa
             panelPausa = new Panel
@@ -425,6 +591,7 @@ namespace Proyecto2P
 
             Button btnReanudar = CreateStyledButton("Reanudar", (panelPausa.Width / 2) - 75, (panelPausa.Height / 2) - 25);
             btnReanudar.Click += (s, e) => {
+                pausa = false;
                 _temporizador.Start();
                 panelPausa.Visible = false;
                 this.Cursor = OcultarCursor();
@@ -432,7 +599,10 @@ namespace Proyecto2P
             };
 
             Button btnReiniciarPausa = CreateStyledButton("Reiniciar", (panelPausa.Width / 2) - 75, (panelPausa.Height / 2) + 35);
-            btnReiniciarPausa.Click += (s, e) => ReiniciarJuego();
+            btnReiniciarPausa.Click += (s, e) => {
+                ReiniciarJuego();
+                inicio = true;
+            };
 
             Button btnSalirPausa = CreateStyledButton("Salir", (panelPausa.Width / 2) - 75, (panelPausa.Height / 2) + 95);
             btnSalirPausa.Click += (s, e) => Application.Exit();
@@ -442,6 +612,14 @@ namespace Proyecto2P
             panelPausa.Controls.Add(btnReiniciarPausa);
             panelPausa.Controls.Add(btnSalirPausa);
             this.Controls.Add(panelPausa);
+
+
+
+
+
+
+
+
 
             // Panel de Game Over
             panelGameOver = new Panel
@@ -463,8 +641,10 @@ namespace Proyecto2P
             };
 
             Button btnReiniciar = CreateStyledButton("Reiniciar", (panelGameOver.Width / 2) - 75, (panelGameOver.Height / 2) + 20);
-            btnReiniciar.Click += (s, e) => ReiniciarJuego();
-
+            btnReiniciar.Click += (s, e) => {
+                ReiniciarJuego();
+                inicio = true;
+            };
             Button btnSalirGameOver = CreateStyledButton("Salir", (panelGameOver.Width / 2) - 75, (panelGameOver.Height / 2) + 90);
             btnSalirGameOver.Click += (s, e) => Application.Exit();
 
@@ -495,6 +675,7 @@ namespace Proyecto2P
             Button btnAumentarAtaque = CreateStyledButton("Aumentar Ataque", (panelMejora.Width / 2) - 75, (panelMejora.Height / 2) + 20);
             btnAumentarAtaque.Click += (s, e) =>
             {
+                inicio = false;
                 JugadorDanio += 5;
                 panelMejora.Visible = false;
                 this.Cursor = OcultarCursor();
@@ -505,6 +686,7 @@ namespace Proyecto2P
             Button btnCurarse = CreateStyledButton("Curarse", (panelMejora.Width / 2) - 75, (panelMejora.Height / 2) + 90);
             btnCurarse.Click += (s, e) =>
             {
+                inicio = false;
                 _saludDelJugador = Math.Min(_saludDelJugador + 30, JugadorSaludMax);
                 panelMejora.Visible = false;
                 this.Cursor = OcultarCursor();
@@ -605,6 +787,8 @@ namespace Proyecto2P
             else if (_saludDelJugador <= 0)
             {
                 // Detener el temporizador y mostrar el panel de Game Over
+
+                inicio = true;
                 _temporizador.Stop();
                 panelGameOver.Visible = true;
 
@@ -706,7 +890,7 @@ namespace Proyecto2P
 
         private void AlPresionarMouse(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && _puedeMoverse)
             {
                 // Crear una nueva bala
                 float dx = e.X - _posicionDelJugador.X;
@@ -774,6 +958,18 @@ namespace Proyecto2P
                 }
             }
 
+
+            //Quitar filtro rojo de danio
+            if(reciveDano >= 1)
+            {
+                reciveDano++;
+                if(reciveDano == 10)
+                {
+                    _imagenJugador = _original;
+                    reciveDano = 0;
+                }
+            }
+
             // Actualizar enemigos
             for (int i = _enemigos.Count - 1; i >= 0; i--)
             {
@@ -781,10 +977,18 @@ namespace Proyecto2P
                 if (_enemigos[i].EstaMuerto())
                 {
                     _enemigos.RemoveAt(i);
-                    _scoreManager.AddPoints(5); // Añadir puntos al eliminar un enemigo
+                    _scoreManager.AddPoints(5);
                 }
                 else if (_enemigos[i].EstaColisionandoCon(_posicionDelJugador))
                 {
+
+                    // Aplicar el filtro rojo de danio
+                    if(reciveDano == 0)
+                    {
+                        reciveDano += 1;
+                        aplicarDanio(ref _imagenJugador);
+                    }
+
                     _saludDelJugador -= 10;
                     _enemigos.RemoveAt(i);
                 }
@@ -816,6 +1020,7 @@ namespace Proyecto2P
 
                     // Mostrar el panel de mejora
                     panelMejora.Visible = true;
+                    inicio = true;
                     this.Cursor = Cursors.Default;
                     _temporizador.Stop();
                     LiberarCursor();
@@ -848,16 +1053,18 @@ namespace Proyecto2P
                     // Verificar colisión simple y aplicar daño al jugador
                     if (_boss.EstaColisionandoCon(_posicionDelJugador))
                     {
-                        _saludDelJugador -= 10; // daño por colisión
+                        // Aplicar el filtro rojo de danio
+                        if (reciveDano == 0)
+                        {
+                            reciveDano += 1;
+                            aplicarDanio(ref _imagenJugador);
+                        }
+                        _saludDelJugador -= 10;
                     }
                 }
             }
 
-            // Dibujar la barra de vida del jefe
-            if (_bossAparecido && _boss != null)
-            {
-                saludJefe = _boss.Salud; // Actualizar la salud del jefe
-            }
+            
 
             // Detener el juego si la salud del jugador es 0
             if (_saludDelJugador <= 0)
@@ -958,7 +1165,21 @@ namespace Proyecto2P
                     _derechaPresionado = true;
                     break;
                 case Keys.Escape:
-                    PausarJuego();
+
+                    if (pausa == true)
+                    {
+                        pausa = false;
+                        _temporizador.Start();
+                        panelPausa.Visible = false;
+                        this.Cursor = OcultarCursor();
+                        BloquearCursor();
+                        panelPausa.Visible = false;
+                    }
+                    else if (inicio == false)
+                    {
+                        PausarJuego();
+                    }
+                    
                     break;
                 case Keys.Space:
                     e.SuppressKeyPress = true;
@@ -990,6 +1211,7 @@ namespace Proyecto2P
 
         private void PausarJuego()
         {
+            pausa = true;
             _temporizador.Stop();
             panelPausa.Visible = true;
             this.Cursor = Cursors.Default;
@@ -1080,6 +1302,13 @@ namespace Proyecto2P
 
         public void AplicarDanioJugador(int cantidad)
         {
+            // Aplicar el filtro rojo de danio
+            if (reciveDano == 0)
+            {
+                reciveDano += 1;
+                aplicarDanio(ref _imagenJugador);
+            }
+
             _saludDelJugador += cantidad;
             if (_saludDelJugador < 0)
             {
@@ -1097,6 +1326,25 @@ namespace Proyecto2P
         {
             Cursor.Clip = Rectangle.Empty;
         }
+
+
+        private void aplicarDanio(ref Image image)
+        {
+            Bitmap bmp = new Bitmap(image);
+            for (int y = 0; y < bmp.Height; y++)
+            {
+                for (int x = 0; x < bmp.Width; x++)
+                {
+                    Color originalColor = bmp.GetPixel(x, y);
+                    Color redColor = Color.FromArgb(originalColor.A, originalColor.R, 0, 0);
+                    bmp.SetPixel(x, y, redColor);
+                }
+            }
+            image = bmp;
+        }
+
+        
+
 
     }
 }

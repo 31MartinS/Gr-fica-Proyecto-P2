@@ -45,7 +45,8 @@ public class Boss
             frameActual++;
             if (frameActual >= AnimacionMuerte.Length)
             {
-                frameActual = AnimacionMuerte.Length - 1; // Mantener el último frame de la animación de muerte
+                // Mantener el último frame de la animación de muerte
+                frameActual = AnimacionMuerte.Length - 1; 
             }
         }
         else if (estaAtacando)
@@ -156,6 +157,6 @@ public class Boss
         float dx = Posicion.X - posicion.X;
         float dy = Posicion.Y - posicion.Y;
         float distancia = (float)Math.Sqrt(dx * dx + dy * dy);
-        return distancia < 20; // Ajustar el radio de colisión
+        return distancia < 20;
     }
 }
