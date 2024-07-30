@@ -146,7 +146,7 @@ namespace Proyecto2P
             _derrotados = 0;
 
             _vidaMago = 100;
-            _vidaCaballero = 150;
+            _vidaCaballero = 160;
             _vidaEnano = 120;
             _vidaAldeano = 80;
 
@@ -908,13 +908,13 @@ namespace Proyecto2P
             {
                 float dx = _posicionFinalJugador.X - _posicionDelJugador.X;
                 float dy = _posicionFinalJugador.Y - _posicionDelJugador.Y;
-                float distance = (float)Math.Sqrt(dx * dx + dy * dy);
-                float speed = 3.0f;
+                float distancia = (float)Math.Sqrt(dx * dx + dy * dy);
+                float vel = 3.0f;
 
-                if (distance > 1)
+                if (distancia > 1)
                 {
-                    _posicionDelJugador.X += dx / distance * speed;
-                    _posicionDelJugador.Y += dy / distance * speed;
+                    _posicionDelJugador.X += dx / distancia * vel;
+                    _posicionDelJugador.Y += dy / distancia * vel;
                 }
                 else
                 {
@@ -1129,16 +1129,16 @@ namespace Proyecto2P
 
         private void MoverJugador()
         {
-            float speed = 5.0f;
+            float velocidad = 5.0f;
 
             if (_arribaPresionado)
-                _posicionDelJugador.Y -= speed;
+                _posicionDelJugador.Y -= velocidad;
             if (_abajoPresionado)
-                _posicionDelJugador.Y += speed;
+                _posicionDelJugador.Y += velocidad;
             if (_izquierdaPresionado)
-                _posicionDelJugador.X -= speed;
+                _posicionDelJugador.X -= velocidad;
             if (_derechaPresionado)
-                _posicionDelJugador.X += speed;
+                _posicionDelJugador.X += velocidad;
 
             // Limitar la posición del jugador dentro de los límites del fondo
             _posicionDelJugador.X = Math.Max(0, Math.Min(ClientSize.Width, _posicionDelJugador.X));

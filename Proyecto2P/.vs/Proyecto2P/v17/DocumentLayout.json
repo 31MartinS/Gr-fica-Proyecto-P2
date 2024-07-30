@@ -1,33 +1,33 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\",
+  "WorkspaceRootPath": "C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|c:\\users\\usuario\\onedrive\\desktop\\gr-fica-proyecto-p2\\proyecto2p\\proyecto2p\\volumecontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\volumecontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|c:\\users\\usuario\\onedrive\\desktop\\gr-fica-proyecto-p2\\proyecto2p\\proyecto2p\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\proyecto2p\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\proyecto2p\\scoremanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\scoremanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|c:\\users\\asus\\desktop\\gr-fica-proyecto-p2\\proyecto2p\\proyecto2p\\volumecontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\volumecontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\proyecto2p\\boss.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\boss.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|c:\\users\\usuario\\onedrive\\desktop\\gr-fica-proyecto-p2\\proyecto2p\\proyecto2p\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\proyecto2p\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\proyecto2p\\enemigo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\proyecto2p\\scoremanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\scoremanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\proyecto2p\\enemigo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\enemigo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\proyecto2p\\bala.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\proyecto2p\\boss.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\boss.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\proyecto2p\\bala.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F0A6ACF1-4CED-47C7-9ED5-F448EB1A49BD}|Proyecto2P\\Proyecto2P.csproj|solutionrelative:proyecto2p\\bala.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -38,17 +38,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Form1.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Form1.cs",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Form1.cs",
               "RelativeDocumentMoniker": "Proyecto2P\\Form1.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Form1.cs",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Form1.cs",
               "RelativeToolTip": "Proyecto2P\\Form1.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAlAAAA",
+              "ViewState": "AQIAAF0EAAAAAAAAAAAYwHQEAAAyAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-18T21:33:49.152Z",
               "IsPinned": true,
@@ -56,11 +56,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "VolumeControl.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\VolumeControl.cs",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\VolumeControl.cs",
               "RelativeDocumentMoniker": "Proyecto2P\\VolumeControl.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\VolumeControl.cs",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\VolumeControl.cs",
               "RelativeToolTip": "Proyecto2P\\VolumeControl.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAgAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -69,11 +69,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Program.cs",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Program.cs",
               "RelativeDocumentMoniker": "Proyecto2P\\Program.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Program.cs",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Program.cs",
               "RelativeToolTip": "Proyecto2P\\Program.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -82,38 +82,39 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "ScoreManager.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\ScoreManager.cs",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\ScoreManager.cs",
               "RelativeDocumentMoniker": "Proyecto2P\\ScoreManager.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\ScoreManager.cs",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\ScoreManager.cs",
               "RelativeToolTip": "Proyecto2P\\ScoreManager.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABsAAAAZAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-27T21:22:26.887Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "Enemigo.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Enemigo.cs",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Enemigo.cs",
               "RelativeDocumentMoniker": "Proyecto2P\\Enemigo.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Enemigo.cs",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Enemigo.cs",
               "RelativeToolTip": "Proyecto2P\\Enemigo.cs",
-              "ViewState": "AQIAACsAAAAAAAAAAAAcwEUAAAAcAAAA",
+              "ViewState": "AQIAADgAAAAAAAAAAAAmwEkAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-27T21:22:25.781Z"
+              "WhenOpened": "2024-07-27T21:22:25.781Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "Boss.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Boss.cs",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Boss.cs",
               "RelativeDocumentMoniker": "Proyecto2P\\Boss.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Boss.cs",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Boss.cs",
               "RelativeToolTip": "Proyecto2P\\Boss.cs",
-              "ViewState": "AQIAAGAAAAAAAAAAAAAmwFQAAAAdAAAA",
+              "ViewState": "AQIAAGgAAAAAAAAAAAAQwHUAAAAQAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-27T21:22:25.13Z",
               "EditorCaption": ""
@@ -122,31 +123,14 @@
               "$type": "Document",
               "DocumentIndex": 6,
               "Title": "Bala.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Bala.cs",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Bala.cs",
               "RelativeDocumentMoniker": "Proyecto2P\\Bala.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\OneDrive\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Bala.cs",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\Gr-fica-Proyecto-P2\\Proyecto2P\\Proyecto2P\\Bala.cs",
               "RelativeToolTip": "Proyecto2P\\Bala.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAGAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-27T21:22:24.518Z"
-            }
-          ]
-        },
-        {
-          "DockedWidth": 342,
-          "SelectedChildIndex": -1,
-          "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{de1fc918-f32e-4dd7-a915-1792a051f26b}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+              "WhenOpened": "2024-07-27T21:22:24.518Z",
+              "EditorCaption": ""
             }
           ]
         }
